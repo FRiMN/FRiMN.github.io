@@ -1,25 +1,20 @@
 Title: Тёмная сторона JavaScript
 Slug: dark_side_javascript
 Date: 2016-03-13 21:50
+Modified: 2016-04-08
 Category: tutorial
 Tags: bugs, js
-Cover: /images/cover.jpg
-Illustration: cover4.jpg
+Cover: /images/cover4.jpg
+Illustration: cover.jpg
+FocalPoint: 25%
 Summary: Баги и малоизвестные особенности JavaScript
 
 
 
-## Определение типов
+## typeof null
 
-Одна из основных проблем JavaScript -- преобразование типов.
-Оно и работает неочевидным образом и напичкано разными багами.
-
-
-
-### typeof null
-
-Это оффициально признанный баг [^MDN:null], не фиксищейся для поддержки совместимости со старым кодом [^type-detection] [^C-null].
-`typeof null` возвращает `"object"`, однако `null` не является объектом [^MDN:null], и что хуже, не ведёт себя как объект.
+Это оффициально признанный баг [^MDN:null], не фиксищейся для поддержки совместимости со старым кодом [^type-detection][^C-null].
+`typeof null` возвращает `"object"`, однако **null** не является объектом [^MDN:null], и что хуже, не ведёт себя как объект.
 
 ```js
 typeof null     // "object"
@@ -59,12 +54,11 @@ _.isNull(undefined) // false
 _.isNull(NaN)       // false
 ```
 
-***
 
-### NaN -- число или строка?
+## Что есть NaN?
 
 Возможно вы не знаете, но `NaN` является числом [^ECMA262] *(и не важно, что **NaN** акроним от **Not a Number**)*, 
-просто это число никогда не равно самому себе [^type-detection] [^underscore] [^MDN:isNaN].
+просто это число никогда не равно самому себе [^type-detection][^underscore][^MDN:isNaN].
 
 ```js
 typeof NaN  // "number"
@@ -100,23 +94,6 @@ Number.isNaN = Number.isNaN || function(value) {
 }
 ```
 
-### Array.length -- метод?
-
-> Свойство массивов `length` взаимосвязано с числовыми свойствами. Некоторые встроенные методы массива (например, `join`, `slice`, `indexOf` и т.д.) учитывают значение свойства `length` при своём вызове. Другие методы (например, `push`, `splice` и т.д.) в результате своей работы также обновляют свойство `length` массива. [^MDN:Array.length]
-
-```js
-var l = [1,2,3,4,5];
-l.length = 3;   // l = [1,2,3]
-l.length = 6;   // l = [1,2,3,undefined,undefined,undefined]
-l.push(55);     // l = [1,2,3,undefined,undefined,undefined,55]
-l.length;       // 7
-l.join();       // "1,2,3,,,,55"
-l.splice(2,4);  // [3,undefined,undefined,undefined]; l = [1,2,55]
-l.length;       // 3
-l[8] = 8;       // l = [1,2,55,undefined,undefined,undefined,undefined,undefined,8]
-l.length;       // 9
-l.length = 3;   // l = [1,2,55]
-```
 
 http://javascript.info/tutorial/memory-leaks
 https://learn.javascript.ru/memory-leaks
@@ -125,7 +102,6 @@ http://www.html5rocks.com/en/tutorials/speed/v8/
 http://www.developersonthe.net/ru/qa/question_id/63-Obhod-elementov-massiva-Kak-eto-sdelat-v-JavaScript/
 http://olmokhov.livejournal.com/21523.html
 
-***
 
 ## Преобразование типов
 
@@ -169,7 +145,7 @@ undefined
 > undefined+1
 NaN
 
-> {}+'1'    // {} -- wtf?
+> {}+'1'    // {} -- wtf??!
 1
 
 > undefined+'1'
@@ -185,4 +161,4 @@ NaN
 
 https://learn.javascript.ru/while-for
 
-
+Последняя запятая в массивах объектов, проверить на разряженных массивах

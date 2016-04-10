@@ -1,47 +1,95 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
+    <title>Tags</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Магия на кончиках пальцев, ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+    
+    <link rel="stylesheet" href="/theme/css/main.css" />
+    <!-- <link rel="stylesheet" href="/theme/css/pygment.css" /> -->
 
-
-        <title>Магия на кончиках пальцев - Tags</title>
-
-
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/theme/css/pure.css">
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://yastatic.net/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://yastatic.net/underscore/1.8.3/underscore-min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/2.2.0/fuse.min.js"></script>
 </head>
-
 <body>
-    <h1>Tags for Магия на кончиках пальцев</h1>        <li><a href="/tag/bugs.html">bugs</a> (1)</li>
-        <li><a href="/tag/js.html">js</a> (2)</li>
-        <li><a href="/tag/wle.html">wle</a> (1)</li>
-    <script>
-        var $top = $('.go-top');
+    <h4 class="site-name">Магия на кончиках пальцев</h4>
+    <article>
+        <header style="background-image: url(
+                /theme/images/code-1.jpg
+        );
+            background-position: center;
+        ">
+            <div class="content">
+                <h1>Список статей</h1>
+            </div>
+        </header>
 
-        // Show or hide the sticky footer button
-        $(window).scroll(function() {
-            if ($(this).scrollTop() > 200) {
-                $top.fadeIn(200);
-            } else {
-                $top.fadeOut(200);
+        <div class="content">
+            <input type="text" class="search" placeholder="Search it!"></input>
+        
+            <div class="count"><small>Найдено <b><span class="num">1</span></b> статей.</small></div>
+            <ol class="results"></ol>
+        </div>
+    </article>
+    <footer class="content">
+        <span>(c) 2016 Николай Волков</span>
+        <span class="separator">::</span>
+            <span class="social"><a href="https://bitbucket.org/FRiMN/">Bitbucket</a></span>
+            <span class="social"><a href="https://github.com/FRiMN">GitHub</a></span>
+    </footer>
+
+    <script type="text/javascript">
+        var articles = [ 
+            {
+                title: "Тёмная сторона JavaScript", 
+                category: "tutorial", 
+                date: "2016-03-13 21:50:00+07:00", 
+                url: "tutorial/2016/dark_side_javascript.html", 
+                summary: "<p>Баги и малоизвестные особенности JavaScript</p>", 
+                tags: ["bugs, js"], 
+            },
+];
+
+        var options = {
+            keys: ['title', 'category', 'tags', 'summary']
+        }
+
+        var fuzzy = new Fuse(articles, options);
+
+        var search = function(searchString) {
+            $(".results").html('');
+
+            var result = articles;
+            if (searchString.length > 0) {
+                var result = fuzzy.search(searchString);
             }
-        });
 
-        // Animate the scroll to top
-        $top.click(function(event) {
-            event.preventDefault();
-            $('html, body').animate({scrollTop: 0}, 300);
-        })
+            var compiled = _.template('<% _.each(items, function(item) { %> \
+                        <li><a href="<%= item.url %>"> \
+                            <h3><%= item.title %></h3> \
+                            <%= item.summary %> \
+                            <p><small> \
+                                <span class="category"><%= item.category %></span> \
+                                <span class="tags"><%= item.tags %></span> \
+                            </small></p> \
+                        </a></li> \
+                    <% }) %>');
 
-        // Makes sure that the href="#" attached to the <a> elements
-        // don't scroll you back up the page.
-        $('body').on('click', 'a[href="#"]', function(event) {
-            event.preventDefault();
+            var filter = compiled({ items: result });
+
+            var $filter = $(filter);
+            $(".results").append($filter);
+
+            $('.count .num').text( result.length )
+        }
+
+        $('.search').val('');
+        search('');
+
+        $(".search").on('input', function(event) {
+            search( $(this).val() );
         });
     </script>
 </body>

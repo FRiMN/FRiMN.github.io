@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <title>Second</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+
+    <script type="text/javascript" src="https://yastatic.net/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://yastatic.net/underscore/1.8.3/underscore-min.js"></script>
+    
+    <link rel="stylesheet" href="/theme/css/main.css" />
+    <link rel="stylesheet" href="/theme/css/pygment.css" />
+</head>
+<body>
+    <h4 class="site-name">Магия на кончиках пальцев</h4>
+    <article>
+        <header style="background-image: url(
+                /images/cover4.jpg
+        );
+                background-position: center 25%;
+        ">
+            <div class="content">
+                <h1>Second</h1>
+
+                <div class="summary"><p>Баги и малоизвестные особенности JavaScript</p></div>
+            </div>
+        </header>
+        
+        <div class="text content">
+            <div class="info">
+                <time pubdate="pubdate" datetime="2016-03-13T21:50:00+07:00">
+                    13 
+                    марта, 2016
+                        ...<span class="last_updated">
+                            8
+                            апр., 2016
+                        </span>
+                </time>
+                <div class="tags">
+                    #bugs
+                </div>
+                <div class="category">
+                    /tutorial
+                </div>
+            </div>
+
+            
+        </div>
+    </article>
+
+    <script type="text/javascript">
+        var $headers = $("body > article > .text h2");
+        var $mainHeader = $("body > article > header");
+        
+
+        // Подготовка списка содержания
+        var id = 0;
+        var toc_list = []
+        $headers.each(function (index) {
+            id = index+1;
+            $(this).attr('id', id);
+            toc_list.push([id, $(this).text()]);
+        })
+
+
+        // Генерация боковой панели
+        var compiled = _.template('<div class="toc"> <h4>Содержание</h4> <ol> <% _.each(list, function(item) { %> <li><a href="#<%= item[0] %>"><%= item[1] %></a></li> <% }) %> </ol> <a class="up" href="#">Наверх</a> </div>');
+
+        var tocContainer = compiled({list : toc_list});
+
+        var $tocContainer = $(tocContainer);
+        $("body > article").append($tocContainer);
+
+
+        // Позиционирование боковой панели
+        var reposition = function() {
+            if ( $(window).scrollTop() < $mainHeader.height() ) {
+                $tocContainer.css('top', $mainHeader.height() - $(window).scrollTop());
+            } else {
+                $tocContainer.css('top', '');
+            }
+        }
+        reposition();
+        $(window).scroll(reposition);
+        
+
+        // Установка анкоров на заголовки
+        $headers.each(function(index) {
+            $(this).prepend('<span class="anchor-link"><a href="#'+$(this).attr('id')+'">#</a></span>')
+        });
+    </script>
+</body>
+</html>

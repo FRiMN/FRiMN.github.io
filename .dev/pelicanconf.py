@@ -7,9 +7,10 @@ SITENAME = u'Магия на кончиках пальцев'
 SITEURL = ''
 
 PATH = '../'
-ARTICLE_PATHS = ['blog']
-ARTICLE_SAVE_AS = '{date:%Y}/{slug}.html'
-ARTICLE_URL = '{date:%Y}/{slug}.html'
+# ARTICLE_PATHS = ['blog']
+ARTICLE_SAVE_AS = '{category}/{date:%Y}/{slug}.html'
+ARTICLE_URL = '{category}/{date:%Y}/{slug}.html'
+
 
 # THEME = "/home/freezeman/pelican-themes/pelican-twitchy"
 # THEME = "/home/freezeman/pelican-themes/monospace"
@@ -26,9 +27,14 @@ ARTICLE_URL = '{date:%Y}/{slug}.html'
 # THEME = "/home/freezeman/pelican-themes/Casper2Pelican"
 # THEME = "/home/freezeman/pelican-themes/mediumfox"
 # THEME = "/home/freezeman/pelican-themes/pelipress"
-THEME = "/home/freezeman/pelican-themes/pure"
+# THEME = "/home/freezeman/pelican-themes/pure"
 # THEME = "/home/freezeman/pelican-themes/sundown"
 # THEME = "/home/freezeman/pelican-themes/storm"
+THEME = "/home/freezeman/projects/singularity"
+
+
+# PLUGIN_PATHS = ['/home/freezeman/pelican-plugins']
+# PLUGINS = ['extract_toc']
 
 
 TIMEZONE = 'Asia/Krasnoyarsk'

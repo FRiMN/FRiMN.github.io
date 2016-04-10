@@ -1,109 +1,113 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
+    <title>Магия на кончиках пальцев</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Магия на кончиках пальцев, ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+    
+    <link rel="stylesheet" href="/theme/css/main.css" />
+    <!-- <link rel="stylesheet" href="/theme/css/pygment.css" /> -->
 
-
-        <title>Магия на кончиках пальцев // </title>
-
-
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/theme/css/pure.css">
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://yastatic.net/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://yastatic.net/underscore/1.8.3/underscore-min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/2.2.0/fuse.min.js"></script>
 </head>
-
 <body>
-<div class="pure-g-r" id="layout">
-<div class="sidebar pure-u">
-    <div class="cover-img" style="background-image: url('')">
-        <div class="cover-body">
-            <header class="header">
-                <hgroup>
-                    <h1 class="brand-main"><a href="/">Магия на кончиках пальцев</a></h1>
-                    <p class="tagline"></p>
-                    <p class="social">
-                        <a href="https://bitbucket.org/FRiMN/">
-                            <i class="fa fa-Bitbucket fa-3x"></i>
-                        </a>
-                        <a href="https://github.com/FRiMN">
-                            <i class="fa fa-GitHub fa-3x"></i>
-                        </a>
-                    <p>
-                </hgroup>
-            </header>
-        </div>
-    </div>
-</div>    <div class="pure-u-1">
+    <h4 class="site-name">Магия на кончиках пальцев</h4>
+    <article>
+        <header style="background-image: url(
+                /theme/images/code-1.jpg
+        );
+            background-position: center;
+        ">
+            <div class="content">
+                <h1>Список статей</h1>
+            </div>
+        </header>
+
         <div class="content">
-            <!-- A wrapper for all the blog posts -->
-            <div class="posts">
-                <h1 class="content-subhead">
-                            Latest posts
-                </h1>
-<section class="post">
-    <header class="post-header">
-        <a href="/author/freezeman.html" title="See posts by Freezeman">
-        </a>
-        <h3><a class="post-title" href="/2016/dark_side_javascript.html">Тёмная сторона JavaScript</a></h3>
-            <p class="post-meta"><p>Баги и малоизвестные особенности JavaScript</p></p>
-            <p class="post-meta">
-                in <a href="/category/tutorial.html">tutorial</a> &middot; Вс. 13 Март 2016
-            </p>
-    </header>
-</section><section class="post">
-    <header class="post-header">
-        <a href="/author/freezeman.html" title="See posts by Freezeman">
-        </a>
-        <h3><a class="post-title" href="/2016/weblayoutengine.html">WebLayoutEngine</a></h3>
-            <p class="post-meta"><p>Концепции для WebLayoutEngine</p></p>
-            <p class="post-meta">
-                in <a href="/category/projects.html">projects</a> &middot; Сб. 05 Март 2016
-            </p>
-    </header>
-</section><div class="pagination-wrapper content-subhead">
-    <div class="pagination">
-        <div class="pagination-left">
-                &nbsp;
+            <input type="text" class="search" placeholder="Search it!"></input>
+        
+            <div class="count"><small>Найдено <b><span class="num">1</span></b> статей.</small></div>
+            <ol class="results"></ol>
         </div>
-        <span>Page 1 / 1</span>
-        <div class="pagination-right">
-        </div>
-    </div>
-</div><footer class="footer">
-    <p>&copy; Магия на кончиках пальцев &ndash;
-        Built with <a href="https://github.com/PurePelicanTheme/pure">Pure Theme</a>
-        for <a href="http://blog.getpelican.com/">Pelican</a>
-    </p>
-</footer>            </div>
-        </div>
-    </div>
-</div>
-    <script>
-        var $top = $('.go-top');
+    </article>
+    <footer class="content">
+        <span>(c) 2016 Николай Волков</span>
+        <span class="separator">::</span>
+            <span class="social"><a href="https://bitbucket.org/FRiMN/" target="_blank">Bitbucket</a></span>
+            <span class="social"><a href="https://github.com/FRiMN" target="_blank">GitHub</a></span>
+    </footer>
 
-        // Show or hide the sticky footer button
-        $(window).scroll(function() {
-            if ($(this).scrollTop() > 200) {
-                $top.fadeIn(200);
-            } else {
-                $top.fadeOut(200);
+    <script type="text/javascript">
+        // QueryString
+        var qs = (function(a) {
+            if (a == "") return {};
+            var b = {};
+            for (var i = 0; i < a.length; ++i)
+            {
+                var p=a[i].split('=', 2);
+                if (p.length == 1)
+                    b[p[0]] = "";
+                else
+                    b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
             }
-        });
+            return b;
+        })(window.location.search.substr(1).split('&'));
 
-        // Animate the scroll to top
-        $top.click(function(event) {
-            event.preventDefault();
-            $('html, body').animate({scrollTop: 0}, 300);
-        })
 
-        // Makes sure that the href="#" attached to the <a> elements
-        // don't scroll you back up the page.
-        $('body').on('click', 'a[href="#"]', function(event) {
-            event.preventDefault();
+        var articles = [ 
+            {
+                title: "Тёмная сторона JavaScript", 
+                category: "tutorial", 
+                date: "2016-03-13 21:50:00+07:00", 
+                url: "tutorial/2016/dark_side_javascript.html", 
+                summary: "<p>Баги и малоизвестные особенности JavaScript</p>", 
+                tags: ["bugs, js"], 
+            },
+];
+
+        var options = {
+            keys: ['title', 'category', 'tags', 'summary']
+        }
+
+        var fuzzy = new Fuse(articles, options);
+
+        var search = function(searchString) {
+            var searchString = searchString || '';
+
+            $(".results").html('');
+
+            var result = articles;
+            if (searchString.length > 0) {
+                var result = fuzzy.search(searchString);
+            }
+
+            var compiled = _.template('<% _.each(items, function(item) { %> \
+                        <li><a href="<%= item.url %>"> \
+                            <h3><%= item.title %></h3> \
+                            <%= item.summary %> \
+                            <p><small> \
+                                <span class="category"><%= item.category %></span> \
+                                <span class="tags"><%= item.tags %></span> \
+                            </small></p> \
+                        </a></li> \
+                    <% }) %>');
+
+            var filter = compiled({ items: result });
+
+            var $filter = $(filter);
+            $(".results").append($filter);
+
+            $('.count .num').text( result.length )
+        }
+
+        $('.search').val( qs["q"] );
+        search( qs["q"] );
+
+        $(".search").on('input', function(event) {
+            search( $(this).val() );
         });
     </script>
 </body>

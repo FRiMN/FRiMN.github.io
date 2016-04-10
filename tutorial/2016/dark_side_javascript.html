@@ -1,18 +1,24 @@
-<html>
+<!doctype html>
+<html lang="ru">
 <head>
     <title>Тёмная сторона JavaScript</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
     
     <link rel="stylesheet" href="/theme/css/main.css" />
     <link rel="stylesheet" href="/theme/css/pygment.css" />
+
+    <script type="text/javascript" src="https://yastatic.net/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://yastatic.net/underscore/1.8.3/underscore-min.js"></script>
 </head>
 <body>
+    <h4 class="site-name">Магия на кончиках пальцев</h4>
     <article>
         <header style="background-image: url(
                 /images/cover4.jpg
         );
-                background-position: center 25%;
+            background-position: center 25%;
         ">
             <div class="content">
                 <h1>Тёмная сторона JavaScript</h1>
@@ -22,6 +28,7 @@
         </header>
         
         <div class="text content">
+            <div class="info">
                 <time pubdate="pubdate" datetime="2016-03-13T21:50:00+07:00">
                     13 
                     марта, 2016
@@ -31,11 +38,13 @@
                         </span>
                 </time>
                 <div class="tags">
-                    #bugs #js
+                        #<a href="/index.html?q=%23bugs">bugs</a>
+                        #<a href="/index.html?q=%23js">js</a>
                 </div>
                 <div class="category">
-                    /tutorial
+                    /<a href="/index.html?q=%2Ftutorial">tutorial</a>
                 </div>
+            </div>
 
             <h2>typeof null</h2>
 <p>Это оффициально признанный баг <sup id="fnref:MDN:null"><a class="footnote-ref" href="#fn:MDN:null" rel="footnote">5</a></sup>, не фиксищейся для поддержки совместимости со старым кодом <sup id="fnref:type-detection"><a class="footnote-ref" href="#fn:type-detection" rel="footnote">1</a></sup><sup id="fnref:C-null"><a class="footnote-ref" href="#fn:C-null" rel="footnote">2</a></sup>.
@@ -110,24 +119,6 @@
 </pre></div>
 
 
-<h2>Array.length -- метод?</h2>
-<blockquote>
-<p>Свойство массивов <code>length</code> взаимосвязано с числовыми свойствами. Некоторые встроенные методы массива (например, <code>join</code>, <code>slice</code>, <code>indexOf</code> и т.д.) учитывают значение свойства <code>length</code> при своём вызове. Другие методы (например, <code>push</code>, <code>splice</code> и т.д.) в результате своей работы также обновляют свойство <code>length</code> массива. <sup id="fnref:MDN:Array.length"><a class="footnote-ref" href="#fn:MDN:Array.length" rel="footnote">8</a></sup></p>
-</blockquote>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">];</span>
-<span class="nx">l</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>   <span class="c1">// l = [1,2,3]</span>
-<span class="nx">l</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>   <span class="c1">// l = [1,2,3,undefined,undefined,undefined]</span>
-<span class="nx">l</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">55</span><span class="p">);</span>     <span class="c1">// l = [1,2,3,undefined,undefined,undefined,55]</span>
-<span class="nx">l</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>       <span class="c1">// 7</span>
-<span class="nx">l</span><span class="p">.</span><span class="nx">join</span><span class="p">();</span>       <span class="c1">// &quot;1,2,3,,,,55&quot;</span>
-<span class="nx">l</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span>  <span class="c1">// [3,undefined,undefined,undefined]; l = [1,2,55]</span>
-<span class="nx">l</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>       <span class="c1">// 3</span>
-<span class="nx">l</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>       <span class="c1">// l = [1,2,55,undefined,undefined,undefined,undefined,undefined,8]</span>
-<span class="nx">l</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>       <span class="c1">// 9</span>
-<span class="nx">l</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>   <span class="c1">// l = [1,2,55]</span>
-</pre></div>
-
-
 <p>http://javascript.info/tutorial/memory-leaks
 https://learn.javascript.ru/memory-leaks
 https://www.smashingmagazine.com/2012/11/writing-fast-memory-efficient-javascript/
@@ -160,7 +151,7 @@ http://olmokhov.livejournal.com/21523.html</p>
 <span class="o">&gt;</span> <span class="kc">undefined</span><span class="o">+</span><span class="mi">1</span>
 <span class="kc">NaN</span>
 
-<span class="o">&gt;</span> <span class="p">{}</span><span class="o">+</span><span class="s1">&#39;1&#39;</span>    <span class="c1">// {} -- wtf?</span>
+<span class="o">&gt;</span> <span class="p">{}</span><span class="o">+</span><span class="s1">&#39;1&#39;</span>    <span class="c1">// {} -- wtf??!</span>
 <span class="mi">1</span>
 
 <span class="o">&gt;</span> <span class="kc">undefined</span><span class="o">+</span><span class="s1">&#39;1&#39;</span>
@@ -175,6 +166,7 @@ http://olmokhov.livejournal.com/21523.html</p>
 
 
 <p>https://learn.javascript.ru/while-for</p>
+<p>Последняя запятая в массивах объектов, проверить на разряженных массивах</p>
 <div class="footnote">
 <hr />
 <ol>
@@ -206,5 +198,53 @@ http://olmokhov.livejournal.com/21523.html</p>
 </div>
         </div>
     </article>
+    <footer class="content">
+        <span>(c) 2016 Николай Волков</span>
+        <span class="separator">::</span>
+            <span class="social"><a href="https://bitbucket.org/FRiMN/">Bitbucket</a></span>
+            <span class="social"><a href="https://github.com/FRiMN">GitHub</a></span>
+    </footer>
+
+    <script type="text/javascript">
+        var $headers = $("body > article > .text h2");
+        var $mainHeader = $("body > article > header");
+        
+
+        // Подготовка списка содержания
+        var id = 0;
+        var toc_list = []
+        $headers.each(function (index) {
+            id = index+1;
+            $(this).attr('id', id);
+            toc_list.push([id, $(this).text()]);
+        })
+
+
+        // Генерация боковой панели
+        var compiled = _.template('<div class="toc"> <h4>Содержание</h4> <ol> <% _.each(list, function(item) { %> <li><a href="#<%= item[0] %>"><%= item[1] %></a></li> <% }) %> </ol> <a class="up" href="#">Наверх</a> </div>');
+
+        var tocContainer = compiled({list : toc_list});
+
+        var $tocContainer = $(tocContainer);
+        $("body > article").append($tocContainer);
+
+
+        // Позиционирование боковой панели
+        var reposition = function() {
+            if ( $(window).scrollTop() < $mainHeader.height() ) {
+                $tocContainer.css('top', $mainHeader.height() - $(window).scrollTop());
+            } else {
+                $tocContainer.css('top', '');
+            }
+        }
+        reposition();
+        $(window).scroll(reposition);
+        
+
+        // Установка анкоров на заголовки
+        $headers.each(function(index) {
+            $(this).prepend('<span class="anchor-link"><a href="#'+$(this).attr('id')+'">#</a></span>')
+        });
+    </script>
 </body>
 </html>

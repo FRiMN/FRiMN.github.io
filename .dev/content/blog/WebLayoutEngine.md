@@ -3,6 +3,7 @@ Date: 2016-03-05 23:50
 Category: projects
 Tags: wle, js
 Illustration: cover3.jpg
+Status: draft
 Summary: Концепции для WebLayoutEngine
 
 [Downloadable File]({attach}/downloads/archive.zip)
