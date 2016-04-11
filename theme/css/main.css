@@ -219,6 +219,12 @@ body > article > header .summary {
     .anchor-link {
         display: none;
     }
+    .site-name {
+        width: 100%;
+        left: 0px;
+        margin: 0 auto !important;
+        text-align: center;
+    }
 }
 
 .content {
