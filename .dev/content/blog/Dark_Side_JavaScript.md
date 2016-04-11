@@ -1,11 +1,11 @@
 Title: Тёмная сторона JavaScript
 Slug: dark_side_javascript
-Date: 2016-03-13 21:50
-Modified: 2016-04-08
+Date: 2016-03-13
+Modified: 2016-04-11
 Category: tutorial
 Tags: bugs, js
 Cover: /images/cover4.jpg
-Illustration: cover.jpg
+Color: #564a4e
 FocalPoint: 25%
 Summary: Баги и малоизвестные особенности JavaScript
 
