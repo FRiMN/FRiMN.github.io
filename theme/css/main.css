@@ -29,25 +29,33 @@ html, body {
     -webkit-box-shadow: 3px 3px 1px 0 rgba(0,0,0, 0.2);
             box-shadow: 3px 3px 1px 0 rgba(0,0,0, 0.2);
 }
+.results li > a.hover,
 .results li > a:hover {
     text-decoration: none;
 }
+.results li > a.hover h3,
 .results li > a:hover h3 {
     text-decoration: underline;
 }
 
 ol {
-    list-style: inside none decimal;
+    list-style: inside decimal none;
 }
 ol.results {
     list-style: none;
 }
+.footnote ol {
+    list-style: inside decimal none;
+}
 .text ul {
-    list-style: inside none lower-latin;
+    list-style: inside lower-latin none;
 }
 .text li ul,
 .text li ol {
     margin-left: 1em;
+}
+li > p {
+    display: inline-block;
 }
 
 a {
@@ -55,28 +63,35 @@ a {
     /* color: #ff9000; */
     text-decoration: none;
 }
+a.hover,
 a:hover {
     text-decoration: underline;
 }
+a[href^='#'].hover,
 a[href^='#']:hover {
     text-decoration: none;
     border-bottom: 1px dashed;
 }
+a.citation-reference:visited,
 a.footnote-ref:visited,
 a[href^='http']:visited {
     color: slateblue;
 }
+a.citation-reference,
 a.footnote-ref {
     vertical-align: text-top;
     font-size: 0.8em;
 }
+a.citation-reference:before, a.citation-reference:after,
 a.footnote-ref:before, a.footnote-ref:after {
     display: inline;
     opacity: 0.2;
 }
+a.citation-reference:before,
 a.footnote-ref:before {
     content: '[';
 }
+a.citation-reference:after,
 a.footnote-ref:after {
     content: ']';
 }
@@ -127,6 +142,7 @@ small {
     -webkit-transition:opacity 0.5s ease 0s;
     transition: opacity 0.5s ease 0s;
 }
+.info.hover,
 .info:hover {
     opacity: 1;
 }
@@ -179,6 +195,8 @@ body > article > header {
     background-size: cover;
     min-height: 320px;
     margin-bottom: 3rem;
+    -webkit-transition:background-image 3s ease 0s;
+    transition: background-image 3s ease 0s;
     -webkit-box-shadow: inset 0 -17px 8px -7px white;
             box-shadow: inset 0 -17px 8px -7px white;
     text-shadow: 0 0 5px black,
@@ -212,6 +230,7 @@ body > article > header .summary {
     margin-left: -1.3em;
     opacity: 0.1;
 }
+.anchor-link.hover,
 .anchor-link:hover {
     opacity: 0.8;
 }
@@ -250,11 +269,32 @@ article p + p {
 .text table > tbody {
     font-size: 0.8rem;
 }
+.text table > tbody tr.hover,
 .text table > tbody tr:hover {
     background-color: #eee;
 }
 .text table td, .text table th {
     padding: 0.1rem 1rem;
+}
+
+table[frame="void"] {
+    border: none;
+}
+table.citation {
+    border-top: 1px solid #900;
+    border-collapse: separate;
+    padding-top: 1rem;
+}
+table.citation + table.citation {
+    border: none;
+    border-collapse: collapse;
+}
+table.citation td.label {
+    min-width: 25%;
+}
+
+hr {
+    margin: 4.4rem 0 2rem;
 }
 
 body > footer {
@@ -264,6 +304,7 @@ body > footer {
     -webkit-transition:opacity 0.5s ease 0s;
     transition: opacity 0.5s ease 0s;
 }
+body > footer.hover,
 body > footer:hover {
     opacity: 1;
 }
@@ -288,17 +329,60 @@ body > footer .social + .social:before {
     padding: 2em;
     -webkit-transition:opacity 0.5s ease 0s;
     transition: opacity 0.5s ease 0s;
+    background-color: white;
 }
+.toc.hover,
 .toc:hover {
     opacity: 1;
 }
 .toc ol {
-    list-style: inside none decimal;
+    list-style: inside decimal none;
     margin-bottom: 0.5em;
 }
 
 @media screen and (max-width: 1150px) {
     .toc {
+        display: none;
+    }
+}
+
+.side-footnotes {
+    position: absolute;
+    left: 650px;
+    top: 0;
+    font-size: 0.6rem;
+    min-width: 250px;
+    opacity: 0.3;
+    -webkit-transition:opacity 0.5s ease 0s;
+    transition: opacity 0.5s ease 0s;
+    background-color: white;
+}
+.side-footnotes.hover,
+.side-footnotes:hover {
+    opacity: 1;
+    z-index: 10;
+}
+.side-footnotes > a {
+    display: block;
+    margin-top: 0.4em;
+}
+.side-footnotes > a > .fnnum {
+    margin-right: 0.3em;
+    /* font-weight: bold; */
+}
+.side-footnotes > a > .fnnum:after,
+.side-footnotes > a > .fnnum:before {
+    display: inline;
+    opacity: 0.2;
+}
+.side-footnotes > a > .fnnum:before {
+    content: '[';
+}
+.side-footnotes > a > .fnnum:after {
+    content: ']';
+}
+@media screen and (max-width: 1200px) {
+    .side-footnotes {
         display: none;
     }
 }

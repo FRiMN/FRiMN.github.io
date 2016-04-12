@@ -52,8 +52,13 @@
                 </div>
             </div>
 
-            <h2>typeof null</h2>
-<p>Это оффициально признанный баг <sup id="fnref:MDN:null"><a class="footnote-ref" href="#fn:MDN:null" rel="footnote">5</a></sup>, не фиксищейся для поддержки совместимости со старым кодом <sup id="fnref:type-detection"><a class="footnote-ref" href="#fn:type-detection" rel="footnote">1</a></sup><sup id="fnref:C-null"><a class="footnote-ref" href="#fn:C-null" rel="footnote">2</a></sup>.
+            <h1>TODO</h1>
+<ol>
+<li>Последняя запятая в массивах объектов, проверить на разряженных массивах</li>
+<li>https://learn.javascript.ru/while-for</li>
+</ol>
+<h2>typeof null</h2>
+<p>Это оффициально признанный баг <sup id="fnref:MDN:null"><a class="footnote-ref" href="#fn:MDN:null" rel="footnote">5</a></sup>, не фиксищейся для поддержки совместимости со старым кодом <sup id="fnref:type-detection"><a class="footnote-ref" href="#fn:type-detection" rel="footnote">1</a></sup> <sup id="fnref:C-null"><a class="footnote-ref" href="#fn:C-null" rel="footnote">2</a></sup>.
 <code>typeof null</code> возвращает <code>"object"</code>, однако <strong>null</strong> не является объектом <sup id="fnref:MDN:null"><a class="footnote-ref" href="#fn:MDN:null" rel="footnote">5</a></sup>, и что хуже, не ведёт себя как объект.</p>
 <div class="highlight"><pre><span class="k">typeof</span> <span class="kc">null</span>     <span class="c1">// &quot;object&quot;</span>
 
@@ -171,8 +176,6 @@ http://olmokhov.livejournal.com/21523.html</p>
 </pre></div>
 
 
-<p>https://learn.javascript.ru/while-for</p>
-<p>Последняя запятая в массивах объектов, проверить на разряженных массивах</p>
 <div class="footnote">
 <hr />
 <ol>
@@ -205,7 +208,7 @@ http://olmokhov.livejournal.com/21523.html</p>
         </div>
     </article>
     <footer class="content">
-        <span>(c) 2016 
+        <span>&copy; 2016 
             Николай Волков</span>
         <span class="separator">::</span>
             <span class="social"><a href="https://bitbucket.org/FRiMN/">Bitbucket</a></span>
@@ -252,6 +255,59 @@ http://olmokhov.livejournal.com/21523.html</p>
         $headers.each(function(index) {
             $(this).prepend('<span class="anchor-link"><a href="#'+$(this).attr('id')+'">#</a></span>')
         });
+
+
+        // Копирование сносок к тексту
+        var footnotesList = {};
+        var $footnotes = $("div.footnote li > p > a:first-child");
+        $footnotes.each(function(index) {
+            footnotesList[ $(this).next('a.footnote-backref').attr('href') ] = $(this);
+        });
+
+        var paragraphs = {}
+        $('a.footnote-ref').each(function(index) {
+            var id;
+            var fnLink = $(this).parent('sup').attr('id');
+            var $container = $(this).parents('p');
+
+            if ( $container.children('.side-footnotes').length === 0 ) {
+                id = _.uniqueId("sfn-");
+                $container.append('<div id="'+id+'" class="side-footnotes">');
+            } else {
+                id = $container.children('.side-footnotes').attr('id');
+            }
+            paragraphs[id] = paragraphs[id] || [];
+            paragraphs[id].push(fnLink);
+            paragraphs[id] = _.uniq(paragraphs[id]);
+        })
+
+        _(paragraphs).each(function(value, key, plist) {
+            var $container = $('#'+key);
+            var $p = $container.parent();
+            var fnnums = [];
+
+            $p.find('a.footnote-ref').each(function() {
+                fnnums.push( $(this).parent('sup') );
+            }).hover(function() {
+                $container.addClass('hover');
+            }, function() {
+                $container.removeClass('hover');
+            });;
+
+            _(value).each(function(element, index, fnlist) {
+                var fnnum = _(fnnums).find(function(item) {
+                    return item.attr('id') === element;
+                });
+                var E = $( footnotesList[ '#'+element ].clone() );
+                E.prepend('<span class="fnnum">'+fnnum.children('a.footnote-ref').text()+'</span>');
+                $container.append( E );
+                fnnum.hover(function() {
+                    E.addClass('hover');
+                }, function() {
+                    E.removeClass('hover');
+                });
+            })
+        })
     </script>
 </body>
 </html>
