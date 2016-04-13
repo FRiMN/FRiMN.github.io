@@ -102,11 +102,12 @@ https://garry.tv/2013/10/17/stop-programming/</p>
 
         // Копирование сносок к тексту
         var footnotesList = {};
-        var $footnotes = $("div.footnote li > p > *:first-child");
+        var $footnotes = $("div.footnote li > p");
         console.log($footnotes)
         $footnotes.each(function(index) {
-            footnotesList[ $(this).next('a.footnote-backref').attr('href') ] = $(this);
+            footnotesList[ $(this).find('a.footnote-backref').attr('href') ] = $(this);
         });
+        console.log(footnotesList)
 
         var paragraphs = {}
         $('a.footnote-ref').each(function(index) {
@@ -145,6 +146,7 @@ https://garry.tv/2013/10/17/stop-programming/</p>
                 console.log(element, footnotesList)
                 var E = $( footnotesList[ '#'+element ].clone() );
                 E.prepend('<span class="fnnum">'+fnnum.children('a.footnote-ref').text()+'</span>');
+                E.find('a.footnote-backref').remove();
                 $container.append( E );
                 fnnum.hover(function() {
                     E.addClass('hover');

@@ -148,6 +148,7 @@ small {
     font-style: oblique;
     font-size: 0.8em;
     opacity: 0.06;
+    margin-bottom: 3em;
     -webkit-transition:opacity 0.5s ease 0s;
     transition: opacity 0.5s ease 0s;
 }
@@ -165,6 +166,9 @@ small {
     margin: 0.3rem 2rem !important;
     opacity: 0.5;
     cursor: default;
+}
+.site-name a {
+    color: inherit;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -380,6 +384,8 @@ body > footer .social + .social:before {
     transition: opacity 0.5s ease 0s;
     background-color: white;
     text-align: left;
+    color: #222;
+    font-style: normal;
 }
 .side-footnotes.hover,
 .side-footnotes:hover {
