@@ -23,7 +23,9 @@
             <div class="content">
                 <h1>Тёмная сторона JavaScript</h1>
 
-                <div class="summary"><p>Баги и малоизвестные особенности JavaScript</p></div>
+                <div class="summary">
+                    <p>Баги и малоизвестные особенности JavaScript</p>
+                </div>
             </div>
         </header>
         
@@ -233,22 +235,24 @@ http://olmokhov.livejournal.com/21523.html</p>
         // Генерация боковой панели
         var compiled = _.template('<div class="toc"> <h4>Содержание</h4> <ol> <% _.each(list, function(item) { %> <li><a href="#<%= item[0] %>"><%= item[1] %></a></li> <% }) %> </ol> <a class="up" href="#">Наверх</a> </div>');
 
-        var tocContainer = compiled({list : toc_list});
+        if (toc_list.length > 1) {
+            var tocContainer = compiled({list : toc_list});
 
-        var $tocContainer = $(tocContainer);
-        $("body > article").append($tocContainer);
+            var $tocContainer = $(tocContainer);
+            $("body > article").append($tocContainer);
 
 
-        // Позиционирование боковой панели
-        var reposition = function() {
-            if ( $(window).scrollTop() < $mainHeader.height() ) {
-                $tocContainer.css('top', $mainHeader.height() - $(window).scrollTop());
-            } else {
-                $tocContainer.css('top', '');
+            // Позиционирование боковой панели
+            var reposition = function() {
+                if ( $(window).scrollTop() < $mainHeader.height() ) {
+                    $tocContainer.css('top', $mainHeader.height() - $(window).scrollTop());
+                } else {
+                    $tocContainer.css('top', '');
+                }
             }
+            reposition();
+            $(window).scroll(reposition);
         }
-        reposition();
-        $(window).scroll(reposition);
         
 
         // Установка анкоров на заголовки
@@ -259,7 +263,8 @@ http://olmokhov.livejournal.com/21523.html</p>
 
         // Копирование сносок к тексту
         var footnotesList = {};
-        var $footnotes = $("div.footnote li > p > a:first-child");
+        var $footnotes = $("div.footnote li > p > *:first-child");
+        console.log($footnotes)
         $footnotes.each(function(index) {
             footnotesList[ $(this).next('a.footnote-backref').attr('href') ] = $(this);
         });
@@ -298,6 +303,7 @@ http://olmokhov.livejournal.com/21523.html</p>
                 var fnnum = _(fnnums).find(function(item) {
                     return item.attr('id') === element;
                 });
+                console.log(element, footnotesList)
                 var E = $( footnotesList[ '#'+element ].clone() );
                 E.prepend('<span class="fnnum">'+fnnum.children('a.footnote-ref').text()+'</span>');
                 $container.append( E );
