@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <title>WebLayoutEngine</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/theme/images/Chi's Sweet Home.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+    
+    <link rel="stylesheet" href="/theme/css/main.css" />
+    <link rel="stylesheet" href="/theme/css/pygment.css" />
+
+    <script type="text/javascript" src="https://yastatic.net/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://yastatic.net/underscore/1.8.3/underscore-min.js"></script>
+</head>
+<body>
+    <h4 class="site-name">Магия на кончиках пальцев</h4>
+    <article>
+        <header style="background-image: url(                /theme/images/stardust.jpeg
+);background-position: center center;
+        ">
+            <div class="content">
+                <h1>WebLayoutEngine</h1>
+
+                <div class="summary">
+                    <p>Концепции для WebLayoutEngine</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="text content">
+            <div class="info">
+                <div class="tags">
+                        #<a href="/index.html?q=%23wle">wle</a>
+                        #<a href="/index.html?q=%23js">js</a>
+                </div>
+                <div class="category">
+                    /<a href="/index.html?q=%2Fprojects">projects</a>
+                </div>
+            </div>
+
+            <p><a href="{attach}/downloads/archive.zip">Downloadable File</a></p>
+<h1>Концепт</h1>
+<ol>
+<li>Простое API<ul>
+<li><code>gtk.Table(rows=5, columns=5, homogeneous=False)</code></li>
+<li><code>tableH.attach(lw, 0,1, *label_row)</code></li>
+<li><code>vd.show()</code></li>
+</ul>
+</li>
+<li>При удалении родителя удаляются и все его потомки</li>
+<li>Темы определяют внешний вид элементов</li>
+<li>Явное отображение/скрытие элементов: <code>show()</code>, <code>hide()</code></li>
+<li>Политики изменения размеров</li>
+<li>Политики пустого пространства</li>
+<li>Все виджеты располагаются в пространстве согластно их политикам размеров и пустого пространства</li>
+<li>Все компановщики занимают всё доступное пространство родительского компановщика (или его части)</li>
+<li>Все виджеты и компановщики должны быть внутри корневого компановщика <code>Root</code></li>
+<li>Каждый виджет имеет уникальный id</li>
+</ol>
+<h1>Сайзеры/Компоновщики/Контейнеры (Менеджеры компоновки)</h1>
+<ol>
+<li><strong>Grid/Table</strong> - размещение виджетов в сетке</li>
+<li><strong>HBox</strong> - размещение виджетов горизонтально</li>
+<li><strong>VBox</strong> - размещение виджетов вертикально</li>
+<li><strong>Box</strong> - размещение виджета на весь размер</li>
+<li><strong>Dialog/Message/Echo</strong> - всплывающий виджет, висящий поверх других виджетов; может быть модальным</li>
+<li><strong>Frame</strong> - группировка виджетов с общим заголовком (подписью) <em>надо?</em></li>
+</ol>
+<h2>Виджеты</h2>
+<ol>
+<li><strong>Progress</strong><ul>
+<li><em>Text</em></li>
+<li><em>TextAlignment</em> [0,1]</li>
+<li><em>Value</em> [0,1]</li>
+</ul>
+</li>
+<li>http://www.opennet.ru/docs/RUS/gtk-reference/TextWidget.html</li>
+<li>http://www.opennet.ru/docs/RUS/gtk-reference/GtkSpinButton.html</li>
+<li>http://www.opennet.ru/docs/RUS/gtk-reference/GtkTreeView.html</li>
+<li><strong>Separator</strong></li>
+<li>http://www.opennet.ru/docs/RUS/gtk-reference/GtkRange.html</li>
+<li><strong>Entry/LineEdit</strong> -- поле ввода</li>
+<li><strong>TextEdit</strong></li>
+<li><strong>Label</strong></li>
+<li>http://doc.crossplatform.ru/qt/4.6.x/widget-classes.html</li>
+</ol>
+<hr />
+<h1>Tests</h1>
+<h2>Render 100 elements 1000 times</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Render engines</th>
+            <th style="text-align:right">Chrome</th>
+            <th style="text-align:right">Firefox</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>WebLayoutEngine</td>
+            <td align="right">1351.226ms</td>
+            <td align="right">1467.81мс</td>
+        </tr>
+        <tr>
+            <td>React</td>
+            <td align="right">5323.632ms</td>
+            <td align="right">6826.2мс</td>
+        </tr>
+        <tr>
+            <td>Underscore</td>
+            <td align="right">1435.358ms</td>
+            <td align="right">1395.74мс</td>
+        </tr>
+        <tr>
+            <td>Mustache</td>
+            <td align="right">1391.363ms</td>
+            <td align="right">1375.35мс</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Render 1 element 1000 times</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Render engines</th>
+            <th style="text-align:right">Chrome</th>
+            <th style="text-align:right">Firefox</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>WebLayoutEngine</td>
+            <td align="right"></td>
+            <td align="right">57.2мс</td>
+        </tr>
+        <tr>
+            <td>React</td>
+            <td align="right"></td>
+            <td align="right">323.38мс</td>
+        </tr>
+        <tr>
+            <td>Underscore</td>
+            <td align="right"></td>
+            <td align="right">6349.43мс</td>
+        </tr>
+        <tr>
+            <td>Mustache</td>
+            <td align="right"></td>
+            <td align="right">61.36мс</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Render 1000 element 1000 times</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Render engines</th>
+            <th style="text-align:right">Chrome</th>
+            <th style="text-align:right">Firefox</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>WebLayoutEngine</td>
+            <td align="right"></td>
+            <td align="right">28719.16мс</td>
+        </tr>
+        <tr>
+            <td>React</td>
+            <td align="right"></td>
+            <td align="right">67917.41мс</td>
+        </tr>
+        <tr>
+            <td>Underscore</td>
+            <td align="right"></td>
+            <td align="right">16363.67мс</td>
+        </tr>
+        <tr>
+            <td>Mustache</td>
+            <td align="right"></td>
+            <td align="right">13594.38мс</td>
+        </tr>
+    </tbody>
+</table>
+        </div>
+    </article>
+    <footer class="content">
+        <span>&copy; 2016 
+            Николай Волков</span>
+        <span class="separator">::</span>
+            <span class="social"><a href="https://bitbucket.org/FRiMN/">Bitbucket</a></span>
+            <span class="social"><a href="https://github.com/FRiMN">GitHub</a></span>
+    </footer>
+
+    <script type="text/javascript">
+        var $headers = $("body > article > .text h2");
+        var $mainHeader = $("body > article > header");
+        
+
+        // Подготовка списка содержания
+        var id = 0;
+        var toc_list = []
+        $headers.each(function (index) {
+            id = index+1;
+            $(this).attr('id', id);
+            toc_list.push([id, $(this).text()]);
+        })
+
+
+        // Генерация боковой панели
+        var compiled = _.template('<div class="toc"> <h4>Содержание</h4> <ol> <% _.each(list, function(item) { %> <li><a href="#<%= item[0] %>"><%= item[1] %></a></li> <% }) %> </ol> <a class="up" href="#">Наверх</a> </div>');
+
+        if (toc_list.length > 1) {
+            var tocContainer = compiled({list : toc_list});
+
+            var $tocContainer = $(tocContainer);
+            $("body > article").append($tocContainer);
+
+
+            // Позиционирование боковой панели
+            var reposition = function() {
+                if ( $(window).scrollTop() < $mainHeader.height() ) {
+                    $tocContainer.css('top', $mainHeader.height() - $(window).scrollTop());
+                } else {
+                    $tocContainer.css('top', '');
+                }
+            }
+            reposition();
+            $(window).scroll(reposition);
+        }
+        
+
+        // Установка анкоров на заголовки
+        $headers.each(function(index) {
+            $(this).prepend('<span class="anchor-link"><a href="#'+$(this).attr('id')+'">#</a></span>')
+        });
+
+
+        // Копирование сносок к тексту
+        var footnotesList = {};
+        var $footnotes = $("div.footnote li > p > *:first-child");
+        console.log($footnotes)
+        $footnotes.each(function(index) {
+            footnotesList[ $(this).next('a.footnote-backref').attr('href') ] = $(this);
+        });
+
+        var paragraphs = {}
+        $('a.footnote-ref').each(function(index) {
+            var id;
+            var fnLink = $(this).parent('sup').attr('id');
+            var $container = $(this).parents('p');
+
+            if ( $container.children('.side-footnotes').length === 0 ) {
+                id = _.uniqueId("sfn-");
+                $container.append('<div id="'+id+'" class="side-footnotes">');
+            } else {
+                id = $container.children('.side-footnotes').attr('id');
+            }
+            paragraphs[id] = paragraphs[id] || [];
+            paragraphs[id].push(fnLink);
+            paragraphs[id] = _.uniq(paragraphs[id]);
+        })
+
+        _(paragraphs).each(function(value, key, plist) {
+            var $container = $('#'+key);
+            var $p = $container.parent();
+            var fnnums = [];
+
+            $p.find('a.footnote-ref').each(function() {
+                fnnums.push( $(this).parent('sup') );
+            }).hover(function() {
+                $container.addClass('hover');
+            }, function() {
+                $container.removeClass('hover');
+            });;
+
+            _(value).each(function(element, index, fnlist) {
+                var fnnum = _(fnnums).find(function(item) {
+                    return item.attr('id') === element;
+                });
+                console.log(element, footnotesList)
+                var E = $( footnotesList[ '#'+element ].clone() );
+                E.prepend('<span class="fnnum">'+fnnum.children('a.footnote-ref').text()+'</span>');
+                $container.append( E );
+                fnnum.hover(function() {
+                    E.addClass('hover');
+                }, function() {
+                    E.removeClass('hover');
+                });
+            })
+        })
+    </script>
+</body>
+</html>

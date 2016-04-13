@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <title>Про фреймворки</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/theme/images/Chi's Sweet Home.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+    
+    <link rel="stylesheet" href="/theme/css/main.css" />
+    <link rel="stylesheet" href="/theme/css/pygment.css" />
+
+    <script type="text/javascript" src="https://yastatic.net/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://yastatic.net/underscore/1.8.3/underscore-min.js"></script>
+</head>
+<body>
+    <h4 class="site-name">Магия на кончиках пальцев</h4>
+    <article>
+        <header style="background-image: url(                /theme/images/stardust.jpeg
+);background-position: center center;
+        ">
+            <div class="content">
+                <h1>Про фреймворки</h1>
+
+                <div class="summary">
+                    <p>Несколько статей о пробемах сложности и фреймворков</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="text content">
+            <div class="info">
+                <div class="tags">
+                        #<a href="/index.html?q=%23frameworks">frameworks</a>
+                        #<a href="/index.html?q=%23fun">fun</a>
+                </div>
+                <div class="category">
+                    /<a href="/index.html?q=%2Flibrary">library</a>
+                </div>
+            </div>
+
+            <p>Stop Programming
+https://garry.tv/2013/10/17/stop-programming/</p>
+<p>Last week I had to tell one of our coders to be more lazy and to work less. This probably sounds like a crazy thing for a boss to be saying.</p>
+<p>Here’s a good quote from Bill Gates</p>
+<p>“I choose a lazy person to do a hard job. Because a lazy person will find an easy way to do it.”</p>
+<p>A while back I sat in a talk at Valve about their employment process. Someone in the audience put their hand up and asked whether they hired junior programmers. The speaker said they didn’t. The audience member asked why not? Who does the shit, boring programming tasks? The speaker said this attitude was backwards, there were no shit or boring programming tasks. If you give that task to a good programmer he will code it in a way that means no-one has to ever deal with that problem again. A junior programmer will solve the problem over and over again. Adding more and more code to maintain, more and more things that could go wrong.</p>
+<p>So by telling our programmer to calm down, to be more lazy – I wasn’t reducing productivity, I was increasing it. The less code the less chance that you’re fixing a problem that doesn’t exist. The less chance you’re optimizing stuff that doesn’t need optimizing. The less code, the less possible bugs, the less time it takes to maintain it. The happier everyone is.</p>
+        </div>
+    </article>
+    <footer class="content">
+        <span>&copy; 2016 
+            Николай Волков</span>
+        <span class="separator">::</span>
+            <span class="social"><a href="https://bitbucket.org/FRiMN/">Bitbucket</a></span>
+            <span class="social"><a href="https://github.com/FRiMN">GitHub</a></span>
+    </footer>
+
+    <script type="text/javascript">
+        var $headers = $("body > article > .text h2");
+        var $mainHeader = $("body > article > header");
+        
+
+        // Подготовка списка содержания
+        var id = 0;
+        var toc_list = []
+        $headers.each(function (index) {
+            id = index+1;
+            $(this).attr('id', id);
+            toc_list.push([id, $(this).text()]);
+        })
+
+
+        // Генерация боковой панели
+        var compiled = _.template('<div class="toc"> <h4>Содержание</h4> <ol> <% _.each(list, function(item) { %> <li><a href="#<%= item[0] %>"><%= item[1] %></a></li> <% }) %> </ol> <a class="up" href="#">Наверх</a> </div>');
+
+        if (toc_list.length > 1) {
+            var tocContainer = compiled({list : toc_list});
+
+            var $tocContainer = $(tocContainer);
+            $("body > article").append($tocContainer);
+
+
+            // Позиционирование боковой панели
+            var reposition = function() {
+                if ( $(window).scrollTop() < $mainHeader.height() ) {
+                    $tocContainer.css('top', $mainHeader.height() - $(window).scrollTop());
+                } else {
+                    $tocContainer.css('top', '');
+                }
+            }
+            reposition();
+            $(window).scroll(reposition);
+        }
+        
+
+        // Установка анкоров на заголовки
+        $headers.each(function(index) {
+            $(this).prepend('<span class="anchor-link"><a href="#'+$(this).attr('id')+'">#</a></span>')
+        });
+
+
+        // Копирование сносок к тексту
+        var footnotesList = {};
+        var $footnotes = $("div.footnote li > p > *:first-child");
+        console.log($footnotes)
+        $footnotes.each(function(index) {
+            footnotesList[ $(this).next('a.footnote-backref').attr('href') ] = $(this);
+        });
+
+        var paragraphs = {}
+        $('a.footnote-ref').each(function(index) {
+            var id;
+            var fnLink = $(this).parent('sup').attr('id');
+            var $container = $(this).parents('p');
+
+            if ( $container.children('.side-footnotes').length === 0 ) {
+                id = _.uniqueId("sfn-");
+                $container.append('<div id="'+id+'" class="side-footnotes">');
+            } else {
+                id = $container.children('.side-footnotes').attr('id');
+            }
+            paragraphs[id] = paragraphs[id] || [];
+            paragraphs[id].push(fnLink);
+            paragraphs[id] = _.uniq(paragraphs[id]);
+        })
+
+        _(paragraphs).each(function(value, key, plist) {
+            var $container = $('#'+key);
+            var $p = $container.parent();
+            var fnnums = [];
+
+            $p.find('a.footnote-ref').each(function() {
+                fnnums.push( $(this).parent('sup') );
+            }).hover(function() {
+                $container.addClass('hover');
+            }, function() {
+                $container.removeClass('hover');
+            });;
+
+            _(value).each(function(element, index, fnlist) {
+                var fnnum = _(fnnums).find(function(item) {
+                    return item.attr('id') === element;
+                });
+                console.log(element, footnotesList)
+                var E = $( footnotesList[ '#'+element ].clone() );
+                E.prepend('<span class="fnnum">'+fnnum.children('a.footnote-ref').text()+'</span>');
+                $container.append( E );
+                fnnum.hover(function() {
+                    E.addClass('hover');
+                }, function() {
+                    E.removeClass('hover');
+                });
+            })
+        })
+    </script>
+</body>
+</html>
