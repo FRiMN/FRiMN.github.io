@@ -50,12 +50,18 @@ ol.results {
 }
 .text ul {
     list-style: outside lower-latin none;
-    margin: 1em 0;
-    padding-left: 3em;
+}
+.text ol {
+    list-style: outside decimal none;
 }
 .text li ul,
 .text li ol {
     margin-left: 1em;
+}
+.text ul,
+.text ol {
+    margin: 1em 0;
+    padding-left: 3em;
 }
 li > p {
     display: inline-block;
