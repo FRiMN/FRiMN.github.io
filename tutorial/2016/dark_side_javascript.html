@@ -40,7 +40,7 @@
                 </div>
                 <div>Издание от
                     <b><span class="last_updated">
-                        11
+                        17
                         апр. 
                         2016
                     </span></b>
@@ -54,14 +54,9 @@
                 </div>
             </div>
 
-            <h1>TODO</h1>
-<ol>
-<li>Последняя запятая в массивах объектов, проверить на разряженных массивах</li>
-<li>https://learn.javascript.ru/while-for</li>
-</ol>
-<h2>typeof null</h2>
-<p>Это оффициально признанный баг <sup id="fnref:MDN:null"><a class="footnote-ref" href="#fn:MDN:null" rel="footnote">5</a></sup>, не фиксищейся для поддержки совместимости со старым кодом <sup id="fnref:type-detection"><a class="footnote-ref" href="#fn:type-detection" rel="footnote">1</a></sup> <sup id="fnref:C-null"><a class="footnote-ref" href="#fn:C-null" rel="footnote">2</a></sup>.
-<code>typeof null</code> возвращает <code>"object"</code>, однако <strong>null</strong> не является объектом <sup id="fnref:MDN:null"><a class="footnote-ref" href="#fn:MDN:null" rel="footnote">5</a></sup>, и что хуже, не ведёт себя как объект.</p>
+            <h2>typeof null</h2>
+<p>Это оффициально признанный баг <sup id="fnref:MDN:null"><a class="footnote-ref" href="#fn:MDN:null" rel="footnote">6</a></sup>, не фиксищейся для поддержки совместимости со старым кодом <sup id="fnref:type-detection"><a class="footnote-ref" href="#fn:type-detection" rel="footnote">1</a></sup> <sup id="fnref:C-null"><a class="footnote-ref" href="#fn:C-null" rel="footnote">2</a></sup>.
+<code>typeof null</code> возвращает <code>"object"</code>, однако <strong>null</strong> не является объектом <sup id="fnref:MDN:null"><a class="footnote-ref" href="#fn:MDN:null" rel="footnote">6</a></sup>, и что хуже, не ведёт себя как объект.</p>
 <div class="highlight"><pre><span class="k">typeof</span> <span class="kc">null</span>     <span class="c1">// &quot;object&quot;</span>
 
 <span class="kd">var</span> <span class="nx">z</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>   <span class="c1">// null</span>
@@ -69,7 +64,7 @@
 </pre></div>
 
 
-<p>Если мы заглянем в код библиотеки underscore.js <sup id="fnref:underscore"><a class="footnote-ref" href="#fn:underscore" rel="footnote">4</a></sup>, то увидим такую функцию как <code>isObject()</code>, как раз правильно проверяющую на тип объекта.</p>
+<p>Если мы заглянем в код библиотеки underscore.js <sup id="fnref:underscore"><a class="footnote-ref" href="#fn:underscore" rel="footnote">5</a></sup>, то увидим такую функцию как <code>isObject()</code>, как раз правильно проверяющую на тип объекта.</p>
 <div class="highlight"><pre><span class="c1">// версия 1.6.0 (2014)</span>
 <span class="nx">_</span><span class="p">.</span><span class="nx">isObject</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">obj</span> <span class="o">===</span> <span class="nb">Object</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
@@ -100,14 +95,14 @@
 
 <h2>Что есть NaN?</h2>
 <p>Возможно вы не знаете, но <code>NaN</code> является числом <sup id="fnref:ECMA262"><a class="footnote-ref" href="#fn:ECMA262" rel="footnote">3</a></sup> <em>(и не важно, что <strong>NaN</strong> акроним от <strong>Not a Number</strong>)</em>, 
-просто это число никогда не равно самому себе <sup id="fnref:type-detection"><a class="footnote-ref" href="#fn:type-detection" rel="footnote">1</a></sup><sup id="fnref:underscore"><a class="footnote-ref" href="#fn:underscore" rel="footnote">4</a></sup><sup id="fnref:MDN:isNaN"><a class="footnote-ref" href="#fn:MDN:isNaN" rel="footnote">6</a></sup>.</p>
+просто это число никогда не равно самому себе <sup id="fnref:type-detection"><a class="footnote-ref" href="#fn:type-detection" rel="footnote">1</a></sup><sup id="fnref:underscore"><a class="footnote-ref" href="#fn:underscore" rel="footnote">5</a></sup><sup id="fnref:MDN:isNaN"><a class="footnote-ref" href="#fn:MDN:isNaN" rel="footnote">7</a></sup>.</p>
 <div class="highlight"><pre><span class="k">typeof</span> <span class="kc">NaN</span>  <span class="c1">// &quot;number&quot;</span>
 
 <span class="kc">NaN</span> <span class="o">===</span> <span class="kc">NaN</span> <span class="c1">// false</span>
 </pre></div>
 
 
-<p>В underscore.js есть пример проверки на <code>NaN</code> <sup id="fnref:underscore"><a class="footnote-ref" href="#fn:underscore" rel="footnote">4</a></sup> (тоже самое в lodash):</p>
+<p>В underscore.js есть пример проверки на <code>NaN</code> <sup id="fnref:underscore"><a class="footnote-ref" href="#fn:underscore" rel="footnote">5</a></sup> (тоже самое в lodash):</p>
 <div class="highlight"><pre><span class="nx">_</span><span class="p">.</span><span class="nb">isNaN</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">toString</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;[object Number]&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">obj</span> <span class="o">!==</span> <span class="o">+</span><span class="nx">obj</span><span class="p">;</span>
 <span class="p">};</span>
@@ -116,7 +111,7 @@
 </pre></div>
 
 
-<p>Есть также встроенная функция <strong>isNaN()</strong>, но она работает некорректно <sup id="fnref:MDN:isNaN"><a class="footnote-ref" href="#fn:MDN:isNaN" rel="footnote">6</a></sup>:</p>
+<p>Есть также встроенная функция <strong>isNaN()</strong>, но она работает некорректно <sup id="fnref:MDN:isNaN"><a class="footnote-ref" href="#fn:MDN:isNaN" rel="footnote">7</a></sup>:</p>
 <div class="highlight"><pre><span class="nb">isNaN</span><span class="p">(</span><span class="kc">NaN</span><span class="p">)</span>          <span class="c1">// true</span>
 <span class="nb">isNaN</span><span class="p">(</span><span class="kc">undefined</span><span class="p">)</span>    <span class="c1">// true</span>
 <span class="nb">isNaN</span><span class="p">({})</span>           <span class="c1">// true</span>
@@ -125,33 +120,71 @@
 </pre></div>
 
 
-<p>В новом стандарте <em>ECMAScript 6 (Harmony)</em> предложена новая функция <code>Number.isNaN()</code> избавленная от этих недостатков. Вот её полифилл <sup id="fnref:MDN:Number.isNaN"><a class="footnote-ref" href="#fn:MDN:Number.isNaN" rel="footnote">7</a></sup>:</p>
+<p>В новом стандарте <em>ECMAScript 6 (Harmony)</em> предложена новая функция <code>Number.isNaN()</code> избавленная от этих недостатков. Вот её полифилл <sup id="fnref:MDN:Number.isNaN"><a class="footnote-ref" href="#fn:MDN:Number.isNaN" rel="footnote">8</a></sup>:</p>
 <div class="highlight"><pre><span class="nb">Number</span><span class="p">.</span><span class="nb">isNaN</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">.</span><span class="nb">isNaN</span> <span class="o">||</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="k">typeof</span> <span class="nx">value</span> <span class="o">===</span> <span class="s1">&#39;number&#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">isNaN</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 
 
-<p>http://javascript.info/tutorial/memory-leaks
-https://learn.javascript.ru/memory-leaks
-https://www.smashingmagazine.com/2012/11/writing-fast-memory-efficient-javascript/
-http://www.html5rocks.com/en/tutorials/speed/v8/
-http://www.developersonthe.net/ru/qa/question_id/63-Obhod-elementov-massiva-Kak-eto-sdelat-v-JavaScript/
-http://olmokhov.livejournal.com/21523.html</p>
-<h2>Преобразование типов</h2>
+<h2>Операторы сложения и вычитания</h2>
+<p>Преобразование типов в JavaScript реализовано по-разному для операторов сложения и вычитания:</p>
 <div class="highlight"><pre><span class="p">[]</span><span class="o">+</span><span class="p">[]</span>   <span class="c1">// &quot;&quot;</span>
 <span class="p">[]</span><span class="o">+</span><span class="p">{}</span>   <span class="c1">// &quot;[object Object]&quot;</span>
-<span class="p">{}</span><span class="o">+</span><span class="p">[]</span>   <span class="c1">// 0</span>
-<span class="p">{}</span><span class="o">+</span><span class="p">{}</span>   <span class="c1">// NaN</span>
 
 <span class="p">[]</span><span class="o">-</span><span class="p">[]</span>   <span class="c1">// 0</span>
 <span class="p">[]</span><span class="o">-</span><span class="p">{}</span>   <span class="c1">// NaN</span>
-<span class="p">{}</span><span class="o">-</span><span class="p">[]</span>   <span class="c1">// -0</span>
-<span class="p">{}</span><span class="o">-</span><span class="p">{}</span>   <span class="c1">// NaN</span>
+
+<span class="kd">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">]</span> 
+<span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;q&#39;</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="o">:</span><span class="mi">3</span><span class="p">}</span> 
+
+<span class="nx">l</span><span class="o">+</span><span class="nx">l</span>     <span class="c1">// &#39;a,b,ca,b,c&#39; </span>
+<span class="nx">l</span><span class="o">-</span><span class="nx">l</span>     <span class="c1">// NaN </span>
+<span class="nx">o</span><span class="o">+</span><span class="nx">o</span>     <span class="c1">// &#39;[object Object][object Object]&#39; </span>
+<span class="nx">o</span><span class="o">-</span><span class="nx">o</span>     <span class="c1">// NaN </span>
 </pre></div>
 
 
-<p>Там где вначале строки стоит <code>{</code> -- там левая фигурная скобка рассматривается как начало блока кода.</p>
+<h2>Арифметика null</h2>
+<p>Преобразования осуществляемые при арифметических операциях и сравнениях <code>&gt;</code> <code>&gt;=</code> <code>&lt;</code> <code>&lt;=</code>, и при проверке равенства <code>==</code> -- различны. Алгоритм проверки равенства для <strong>undefined</strong> и <strong>null</strong> в спецификации прописан отдельно <sup id="fnref:es5"><a class="footnote-ref" href="#fn:es5" rel="footnote">4</a></sup>. В нём считается, что они равны между собой, но эти значения не равны никакому другому значению <sup id="fnref:types"><a class="footnote-ref" href="#fn:types" rel="footnote">9</a></sup>.</p>
+<p>Из-за этого <strong>null</strong> ведёт себя странно при сравнении:</p>
+<div class="highlight"><pre><span class="o">&gt;</span> <span class="kc">null</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+<span class="kc">true</span>
+
+<span class="o">&gt;</span> <span class="kc">null</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+<span class="kc">true</span>
+
+<span class="o">&gt;</span> <span class="kc">null</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="kc">false</span>
+
+<span class="o">&gt;</span> <span class="kc">null</span> <span class="o">&lt;</span> <span class="mi">0</span>
+<span class="kc">false</span>
+
+<span class="o">&gt;</span> <span class="kc">null</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="kc">false</span>
+</pre></div>
+
+
+<p>А значение <strong>undefined</strong> вообще «несравнимо»:</p>
+<div class="highlight"><pre><span class="o">&gt;</span> <span class="kc">undefined</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="kc">false</span>
+
+<span class="o">&gt;</span> <span class="kc">undefined</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="kc">false</span>
+
+<span class="o">&gt;</span> <span class="kc">undefined</span> <span class="o">&lt;</span> <span class="mi">0</span>
+<span class="kc">false</span>
+
+<span class="o">&gt;</span> <span class="kc">undefined</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+<span class="kc">false</span>
+
+<span class="o">&gt;</span> <span class="kc">undefined</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+<span class="kc">false</span>
+</pre></div>
+
+
+<h2>Пустой блок кода</h2>
+<p>Пустой блок кода <code>{}</code> в одних случаях может вести себя как <strong>null</strong>, а в других -- как "ничего", хотя сам по себе интерпритируется как <strong>undefined</strong>.</p>
 <div class="highlight"><pre><span class="o">&gt;</span> <span class="kc">undefined</span>
 <span class="kc">undefined</span>
 
@@ -178,6 +211,51 @@ http://olmokhov.livejournal.com/21523.html</p>
 </pre></div>
 
 
+<h2>Обход массива</h2>
+<p>Существует несколько способов обойти массив. Одни из них обходят массив как массив, а другие как объект <sup id="fnref:arrayloop"><a class="footnote-ref" href="#fn:arrayloop" rel="footnote">10</a></sup>.</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="nx">list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;x&quot;</span>
+<span class="nx">list</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;y&quot;</span>
+<span class="nx">list</span><span class="p">[</span><span class="mi">10000</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;z&quot;</span>
+
+<span class="o">&gt;</span> <span class="nx">list</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">})</span> 
+<span class="nx">x</span> 
+<span class="nx">y</span> 
+<span class="nx">z</span>
+
+<span class="o">&gt;</span> <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">}</span>
+<span class="nx">x</span>
+<span class="kc">undefined</span>
+<span class="p">...</span>
+<span class="kc">undefined</span>
+<span class="nx">y</span>
+<span class="kc">undefined</span>
+<span class="p">...</span>
+<span class="kc">undefined</span>
+<span class="nx">z</span>
+
+<span class="o">&gt;</span> <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">list</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="c1">// Здесь мы проверяем что ключ взят не из цепочки прототипов</span>
+        <span class="nx">list</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="o">&amp;&amp;</span> 
+        <span class="c1">// Тут, что это числовой ключ, поскольку, хотя разряженный </span>
+        <span class="c1">// массив практически не отличается от объекта мы по прежнему </span>
+        <span class="c1">// используем только числовые ключи</span>
+        <span class="sr">/^0$|^[1-9]\d*$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="o">&amp;&amp;</span> 
+        <span class="c1">// Здесь мы проверяем что ключ не выходит за пределы допустимые </span>
+        <span class="c1">// для ключей массива 2^32 - 2. Это число, согласно спецификации, </span>
+        <span class="c1">// максимальный из возможных индексов массива</span>
+        <span class="nx">key</span> <span class="o">&lt;=</span> <span class="mi">4294967294</span>             
+    <span class="p">)</span> <span class="p">{</span> 
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">list</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> 
+    <span class="p">}</span> 
+<span class="p">}</span>
+<span class="nx">x</span>
+<span class="nx">y</span>
+<span class="nx">z</span>
+</pre></div>
+
+
 <div class="footnote">
 <hr />
 <ol>
@@ -190,20 +268,26 @@ http://olmokhov.livejournal.com/21523.html</p>
 <li id="fn:ECMA262">
 <p><a href="http://www.ecma-international.org/ecma-262/5.1/Ecma-262.pdf">Спецификация ECMA-262, п. 4.3.20 и 8.5</a>&#160;<a class="footnote-backref" href="#fnref:ECMA262" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
+<li id="fn:es5">
+<p><a href="http://es5.github.io/x11.html#x11.9.3">Документация EcmaScript 5, п. 11.9.3</a>&#160;<a class="footnote-backref" href="#fnref:es5" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
 <li id="fn:underscore">
-<p><a href="http://underscorejs.org/docs/underscore.html">Аннотированный код underscore.js</a>&#160;<a class="footnote-backref" href="#fnref:underscore" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+<p><a href="http://underscorejs.org/docs/underscore.html">Аннотированный код underscore.js</a>&#160;<a class="footnote-backref" href="#fnref:underscore" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
 <li id="fn:MDN:null">
-<p><a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/null">Документация MDN по <strong>null</strong></a>&#160;<a class="footnote-backref" href="#fnref:MDN:null" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+<p><a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/null">Документация MDN по <strong>null</strong></a>&#160;<a class="footnote-backref" href="#fnref:MDN:null" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
 </li>
 <li id="fn:MDN:isNaN">
-<p><a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/isNaN">Документация MDN по <strong>isNaN()</strong></a>&#160;<a class="footnote-backref" href="#fnref:MDN:isNaN" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+<p><a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/isNaN">Документация MDN по <strong>isNaN()</strong></a>&#160;<a class="footnote-backref" href="#fnref:MDN:isNaN" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
 </li>
 <li id="fn:MDN:Number.isNaN">
-<p><a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN">Документация MDN по <strong>Number.isNaN()</strong></a>&#160;<a class="footnote-backref" href="#fnref:MDN:Number.isNaN" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+<p><a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN">Документация MDN по <strong>Number.isNaN()</strong></a>&#160;<a class="footnote-backref" href="#fnref:MDN:Number.isNaN" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
 </li>
-<li id="fn:MDN:Array.length">
-<p><a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array#Relationship_between_length_and_numerical_properties">Документация MDN по <strong>Array.length</strong></a>&#160;<a class="footnote-backref" href="#fnref:MDN:Array.length" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+<li id="fn:types">
+<p><a href="https://learn.javascript.ru/types-conversion">Преобразование типов для примитивов</a>&#160;<a class="footnote-backref" href="#fnref:types" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+</li>
+<li id="fn:arrayloop">
+<p><a href="http://www.developersonthe.net/ru/qa/question_id/63-Obhod-elementov-massiva-Kak-eto-sdelat-v-JavaScript/">Способы обхода массива</a>&#160;<a class="footnote-backref" href="#fnref:arrayloop" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

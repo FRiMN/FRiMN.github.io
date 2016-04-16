@@ -1,7 +1,7 @@
 Title: Тёмная сторона JavaScript
 Slug: dark_side_javascript
 Date: 2016-03-13
-Modified: 2016-04-11
+Modified: 2016-04-17
 Category: tutorial
 Tags: bugs, js
 Cover: /images/cover4.jpg
@@ -10,11 +10,6 @@ FocalPoint: 25%
 Summary: Баги и малоизвестные особенности JavaScript
 
 
-
-# TODO
-
-1. Последняя запятая в массивах объектов, проверить на разряженных массивах
-2. https://learn.javascript.ru/while-for
 
 
 ## typeof null
@@ -101,42 +96,75 @@ Number.isNaN = Number.isNaN || function(value) {
 ```
 
 
-http://javascript.info/tutorial/memory-leaks
-https://learn.javascript.ru/memory-leaks
-https://www.smashingmagazine.com/2012/11/writing-fast-memory-efficient-javascript/
-http://www.html5rocks.com/en/tutorials/speed/v8/
-http://www.developersonthe.net/ru/qa/question_id/63-Obhod-elementov-massiva-Kak-eto-sdelat-v-JavaScript/
-http://olmokhov.livejournal.com/21523.html
 
+## Операторы сложения и вычитания
 
-## Преобразование типов
+Преобразование типов в JavaScript реализовано по-разному для операторов сложения и вычитания:
 
 ```js
 []+[]   // ""
 []+{}   // "[object Object]"
-{}+[]   // 0
-{}+{}   // NaN
 
 []-[]   // 0
 []-{}   // NaN
-{}-[]   // -0
-{}-{}   // NaN
+
+var l = ['a','b','c'] 
+var o = {'q':1, 'w':2, 'e':3} 
+
+l+l     // 'a,b,ca,b,c' 
+l-l     // NaN 
+o+o     // '[object Object][object Object]' 
+o-o     // NaN 
 ```
 
-Там где вначале строки стоит `{` -- там левая фигурная скобка рассматривается как начало блока кода.
 
 
-[^type-detection]: [javascript.info](http://javascript.info/tutorial/type-detection)
-[^C-null]: [The history of “typeof null”](http://www.2ality.com/2013/10/typeof-null.html)
-[^ECMA262]: [Спецификация ECMA-262, п. 4.3.20 и 8.5](http://www.ecma-international.org/ecma-262/5.1/Ecma-262.pdf)
-[^underscore]: [Аннотированный код underscore.js](http://underscorejs.org/docs/underscore.html)
-[^MDN:null]: [Документация MDN по **null**](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/null)
-[^MDN:isNaN]: [Документация MDN по **isNaN()**](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/isNaN)
-[^MDN:Number.isNaN]: [Документация MDN по **Number.isNaN()**](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN)
-[^MDN:Array.length]: [Документация MDN по **Array.length**](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array#Relationship_between_length_and_numerical_properties)
+## Арифметика null
+
+Преобразования осуществляемые при арифметических операциях и сравнениях `>` `>=` `<` `<=`, и при проверке равенства `==` -- различны. Алгоритм проверки равенства для **undefined** и **null** в спецификации прописан отдельно [^es5]. В нём считается, что они равны между собой, но эти значения не равны никакому другому значению [^types].
+
+Из-за этого **null** ведёт себя странно при сравнении:
+
+```js
+> null >= 0
+true
+
+> null <= 0
+true
+
+> null > 0
+false
+
+> null < 0
+false
+
+> null == 0
+false
+```
+
+А значение **undefined** вообще «несравнимо»:
+
+```js
+> undefined > 0
+false
+
+> undefined == 0
+false
+
+> undefined < 0
+false
+
+> undefined >= 0
+false
+
+> undefined <= 0
+false
+```
 
 
+## Пустой блок кода
 
+Пустой блок кода `{}` в одних случаях может вести себя как **null**, а в других -- как "ничего", хотя сам по себе интерпритируется как **undefined**.
 
 ```js
 > undefined
@@ -165,6 +193,62 @@ NaN
 ```
 
 
+## Обход массива
+
+Существует несколько способов обойти массив. Одни из них обходят массив как массив, а другие как объект [^arrayloop].
+
+```js
+var list = []
+list[0] = "x"
+list[100] = "y"
+list[10000] = "z"
+
+> list.forEach(function(item) { console.log(item) }) 
+x 
+y 
+z
+
+> for (var i = 0; i < list.length; i++) { console.log(item) }
+x
+undefined
+...
+undefined
+y
+undefined
+...
+undefined
+z
+
+> for (var key in list) { 
+    if (
+        // Здесь мы проверяем что ключ взят не из цепочки прототипов
+        list.hasOwnProperty(key) && 
+        // Тут, что это числовой ключ, поскольку, хотя разряженный 
+        // массив практически не отличается от объекта мы по прежнему 
+        // используем только числовые ключи
+        /^0$|^[1-9]\d*$/.test(key) && 
+        // Здесь мы проверяем что ключ не выходит за пределы допустимые 
+        // для ключей массива 2^32 - 2. Это число, согласно спецификации, 
+        // максимальный из возможных индексов массива
+        key <= 4294967294             
+    ) { 
+        console.log(list[key]) 
+    } 
+}
+x
+y
+z
+```
 
 
 
+[^type-detection]: [javascript.info](http://javascript.info/tutorial/type-detection)
+[^C-null]: [The history of “typeof null”](http://www.2ality.com/2013/10/typeof-null.html)
+[^ECMA262]: [Спецификация ECMA-262, п. 4.3.20 и 8.5](http://www.ecma-international.org/ecma-262/5.1/Ecma-262.pdf)
+[^es5]: [Документация EcmaScript 5, п. 11.9.3](http://es5.github.io/x11.html#x11.9.3)
+[^underscore]: [Аннотированный код underscore.js](http://underscorejs.org/docs/underscore.html)
+[^MDN:null]: [Документация MDN по **null**](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/null)
+[^MDN:isNaN]: [Документация MDN по **isNaN()**](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/isNaN)
+[^MDN:Number.isNaN]: [Документация MDN по **Number.isNaN()**](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN)
+[^types]: [Преобразование типов для примитивов](https://learn.javascript.ru/types-conversion)
+[^arrayloop]: [Способы обхода массива](http://www.developersonthe.net/ru/qa/question_id/63-Obhod-elementov-massiva-Kak-eto-sdelat-v-JavaScript/)

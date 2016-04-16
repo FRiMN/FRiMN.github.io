@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <title>TODO</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/theme/images/Chi's Sweet Home.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+    
+    <link rel="stylesheet" href="/theme/css/main.css" />
+    <link rel="stylesheet" href="/theme/css/pygment.css" />
+
+    <script type="text/javascript" src="https://yastatic.net/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://yastatic.net/underscore/1.8.3/underscore-min.js"></script>
+</head>
+<body>
+    <h4 class="site-name"><a href="/index.html">Магия на кончиках пальцев</a></h4>
+    <article>
+        <header style="background-image: url(                /theme/images/stardust.jpeg
+);background-position: center center;
+        ">
+            <div class="content">
+                <h1>TODO</h1>
+
+                <div class="summary">
+                    <ul>
+<li>http://javascript.info/tutorial/memory-leaks</li>
+<li>https://learn.javascript.ru/memory-leaks</li>
+<li>https://www.smashingmagazine.com/2012/11/writing-fast-memory-efficient-javascript/</li>
+<li>http://www.html5rocks.com/en/tutorials/speed/v8/</li>
+</ul>
+                </div>
+            </div>
+        </header>
+        
+        <div class="text content">
+            <div class="info">
+                <div class="tags">
+                        #<a href="/index.html?q=%23todo">todo</a>
+                </div>
+                <div class="category">
+                    /<a href="/index.html?q=%2Fmisc">misc</a>
+                </div>
+            </div>
+
+            <ul>
+<li>http://javascript.info/tutorial/memory-leaks</li>
+<li>https://learn.javascript.ru/memory-leaks</li>
+<li>https://www.smashingmagazine.com/2012/11/writing-fast-memory-efficient-javascript/</li>
+<li>http://www.html5rocks.com/en/tutorials/speed/v8/</li>
+</ul>
+        </div>
+    </article>
+    <footer class="content">
+        <span>&copy; 2016 
+            Николай Волков</span>
+        <span class="separator">::</span>
+            <span class="social"><a href="https://bitbucket.org/FRiMN/">Bitbucket</a></span>
+            <span class="social"><a href="https://github.com/FRiMN">GitHub</a></span>
+    </footer>
+
+    <script type="text/javascript">
+        var $headers = $("body > article > .text h2");
+        var $mainHeader = $("body > article > header");
+        
+
+        // Подготовка списка содержания
+        var id = 0;
+        var toc_list = []
+        $headers.each(function (index) {
+            id = index+1;
+            $(this).attr('id', id);
+            toc_list.push([id, $(this).text()]);
+        })
+
+
+        // Генерация боковой панели
+        var compiled = _.template('<div class="toc"> <h4>Содержание</h4> <ol> <% _.each(list, function(item) { %> <li><a href="#<%= item[0] %>"><%= item[1] %></a></li> <% }) %> </ol> <a class="up" href="#">Наверх</a> </div>');
+
+        if (toc_list.length > 1) {
+            var tocContainer = compiled({list : toc_list});
+
+            var $tocContainer = $(tocContainer);
+            $("body > article").append($tocContainer);
+
+
+            // Позиционирование боковой панели
+            var reposition = function() {
+                if ( $(window).scrollTop() < $mainHeader.height() ) {
+                    $tocContainer.css('top', $mainHeader.height() - $(window).scrollTop());
+                } else {
+                    $tocContainer.css('top', '');
+                }
+            }
+            reposition();
+            $(window).scroll(reposition);
+        }
+        
+
+        // Установка анкоров на заголовки
+        $headers.each(function(index) {
+            $(this).prepend('<span class="anchor-link"><a href="#'+$(this).attr('id')+'">#</a></span>')
+        });
+
+
+        // Копирование сносок к тексту
+        var footnotesList = {};
+        var $footnotes = $("div.footnote li > p");
+        // console.log($footnotes)
+        $footnotes.each(function(index) {
+            footnotesList[ $(this).find('a.footnote-backref').attr('href') ] = $(this);
+        });
+        // console.log(footnotesList)
+
+        var paragraphs = {}
+        $('a.footnote-ref').each(function(index) {
+            var id;
+            var fnLink = $(this).parent('sup').attr('id');
+            var $container = $(this).parents('p');
+
+            if ( $container.children('.side-footnotes').length === 0 ) {
+                id = _.uniqueId("sfn-");
+                $container.append('<div id="'+id+'" class="side-footnotes">');
+            } else {
+                id = $container.children('.side-footnotes').attr('id');
+            }
+            paragraphs[id] = paragraphs[id] || [];
+            paragraphs[id].push(fnLink);
+            paragraphs[id] = _.uniq(paragraphs[id]);
+        })
+
+        _(paragraphs).each(function(value, key, plist) {
+            var $container = $('#'+key);
+            var $p = $container.parent();
+            var fnnums = [];
+
+            $p.find('a.footnote-ref').each(function() {
+                fnnums.push( $(this).parent('sup') );
+            }).hover(function() {
+                $container.addClass('hover');
+            }, function() {
+                $container.removeClass('hover');
+            });;
+
+            _(value).each(function(element, index, fnlist) {
+                var fnnum = _(fnnums).find(function(item) {
+                    return item.attr('id') === element;
+                });
+                // console.log(fnnum, element, footnotesList)
+                var E = $( footnotesList[ '#'+element ].clone() );
+                E.prepend('<span class="fnnum">'+fnnum.children('a.footnote-ref').text()+'</span>');
+                E.find('a.footnote-backref').remove();
+                $container.append( E );
+                fnnum.hover(function() {
+                    E.find('a').addClass('hover');
+                }, function() {
+                    E.find('a').removeClass('hover');
+                });
+            })
+        })
+    </script>
+</body>
+</html>
