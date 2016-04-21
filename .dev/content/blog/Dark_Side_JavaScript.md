@@ -1,7 +1,7 @@
 Title: Тёмная сторона JavaScript
 Slug: dark_side_javascript
 Date: 2016-03-13
-Modified: 2016-04-17
+Modified: 2016-04-21
 Category: tutorial
 Tags: bugs, js
 Cover: /images/cover4.jpg
@@ -115,8 +115,21 @@ l+l     // 'a,b,ca,b,c'
 l-l     // NaN 
 o+o     // '[object Object][object Object]' 
 o-o     // NaN 
+
+var L = [22]
+
+L-[]    // 22
+[]-L    // -22
++L      // 22
+L+L     // '2222'
+L-L     // 0
+L+[]    // '22'
+-L      // -22
+100-L   // 78
+100+L   // '10022'
 ```
 
+Обратите внимание, что в некоторых случаях, когда массив является одним из операндов оператора вычитания, массив может быть преобразован к числу **автоматически**.
 
 
 ## Арифметика null

@@ -40,7 +40,7 @@
                 </div>
                 <div>Издание от
                     <b><span class="last_updated">
-                        17
+                        21
                         апр. 
                         2016
                     </span></b>
@@ -142,9 +142,22 @@
 <span class="nx">l</span><span class="o">-</span><span class="nx">l</span>     <span class="c1">// NaN </span>
 <span class="nx">o</span><span class="o">+</span><span class="nx">o</span>     <span class="c1">// &#39;[object Object][object Object]&#39; </span>
 <span class="nx">o</span><span class="o">-</span><span class="nx">o</span>     <span class="c1">// NaN </span>
+
+<span class="kd">var</span> <span class="nx">L</span> <span class="o">=</span> <span class="p">[</span><span class="mi">22</span><span class="p">]</span>
+
+<span class="nx">L</span><span class="o">-</span><span class="p">[]</span>    <span class="c1">// 22</span>
+<span class="p">[]</span><span class="o">-</span><span class="nx">L</span>    <span class="c1">// -22</span>
+<span class="o">+</span><span class="nx">L</span>      <span class="c1">// 22</span>
+<span class="nx">L</span><span class="o">+</span><span class="nx">L</span>     <span class="c1">// &#39;2222&#39;</span>
+<span class="nx">L</span><span class="o">-</span><span class="nx">L</span>     <span class="c1">// 0</span>
+<span class="nx">L</span><span class="o">+</span><span class="p">[]</span>    <span class="c1">// &#39;22&#39;</span>
+<span class="o">-</span><span class="nx">L</span>      <span class="c1">// -22</span>
+<span class="mi">100</span><span class="o">-</span><span class="nx">L</span>   <span class="c1">// 78</span>
+<span class="mi">100</span><span class="o">+</span><span class="nx">L</span>   <span class="c1">// &#39;10022&#39;</span>
 </pre></div>
 
 
+<p>Обратите внимание, что в некоторых случаях, когда массив является одним из операндов оператора вычитания, массив может быть преобразован к числу <strong>автоматически</strong>.</p>
 <h2>Арифметика null</h2>
 <p>Преобразования осуществляемые при арифметических операциях и сравнениях <code>&gt;</code> <code>&gt;=</code> <code>&lt;</code> <code>&lt;=</code>, и при проверке равенства <code>==</code> -- различны. Алгоритм проверки равенства для <strong>undefined</strong> и <strong>null</strong> в спецификации прописан отдельно <sup id="fnref:es5"><a class="footnote-ref" href="#fn:es5" rel="footnote">4</a></sup>. В нём считается, что они равны между собой, но эти значения не равны никакому другому значению <sup id="fnref:types"><a class="footnote-ref" href="#fn:types" rel="footnote">9</a></sup>.</p>
 <p>Из-за этого <strong>null</strong> ведёт себя странно при сравнении:</p>
