@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <title>Генерация соли</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/theme/images/Chi's Sweet Home.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+    
+    <link rel="stylesheet" href="/theme/css/main.css" />
+    <link rel="stylesheet" href="/theme/css/pygment.css" />
+
+    <script type="text/javascript" src="https://yastatic.net/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://yastatic.net/underscore/1.8.3/underscore-min.js"></script>
+</head>
+<body>
+    <h4 class="site-name"><a href="/index.html">Магия на кончиках пальцев</a></h4>
+    <article>
+        <header style="background-image: url(                /theme/images/stardust.jpeg
+);background-position: center center;
+        ">
+            <div class="content">
+                <h1>Генерация соли</h1>
+
+                <div class="summary">
+                    <p>Генерация строк из случайной последовательности символов (соли и т.п.)</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="text content">
+            <div class="info">
+                <div>Публикация от
+                    <b><time pubdate datetime="2016-05-04T00:00:00+07:00">
+                        04 
+                        мая 
+                        2016
+                    </time></b>
+                </div>
+                <div class="tags">
+                        #<a href="/index.html?q=%23sh">sh</a>
+                        #<a href="/index.html?q=%23unix">unix</a>
+                        #<a href="/index.html?q=%23password">password</a>
+                        #<a href="/index.html?q=%23hash">hash</a>
+                </div>
+                <div class="category">
+                    /<a href="/index.html?q=%2Ftutorial">tutorial</a>
+                </div>
+            </div>
+
+            <h2>Формат хэша пароля</h2>
+<p>Можно встретить следующий вариант хранения паролей:</p>
+<div class="highlight"><pre><span class="err">$</span><span class="n">id</span><span class="err">$</span><span class="n">salt</span><span class="err">$</span><span class="n">encrypted</span>
+</pre></div>
+
+
+<p>где:</p>
+<ul>
+<li><em>id</em> -- алгоритм хэширования<ul>
+<li><strong>1</strong> -- MD5</li>
+<li><strong>2</strong> -- blowfish</li>
+<li><strong>5</strong> -- SHA-256</li>
+<li><strong>6</strong> -- SHA-512</li>
+</ul>
+</li>
+<li><em>salt</em> -- соль</li>
+<li><em>encrypted</em> -- результат применения алгоритма хэширования к паролю и соли</li>
+</ul>
+<h3>Пример</h3>
+<div class="highlight"><pre><span class="err">$</span><span class="mi">1</span><span class="err">$</span><span class="n">vTsHxl6j</span><span class="err">$</span><span class="n">dFvR</span><span class="p">.</span><span class="n">mqYF</span><span class="o">/</span><span class="n">SP3kysqCM</span><span class="o">/</span><span class="n">s</span><span class="o">/</span>
+</pre></div>
+
+
+<p><code>dFvR.mqYF/SP3kysqCM/s/</code> -- хэш md5 (<code>1</code>) от парольной фразы с солью <code>vTsHxl6j</code>.</p>
+<h2>openssl rand</h2>
+<p>Генерирует псевдослучайную последовательность символов</p>
+<div class="highlight"><pre><span class="c"># generates a base64 encoded 32 chars length random string</span>
+<span class="nv">$ </span>openssl rand -base64 32
+CJ/a0JsZlStDceTGtwfVkInUwJZ6rl7PnNtysz0/Kb8<span class="o">=</span>
+</pre></div>
+
+
+<h2>pwgen</h2>
+<p>Генерирует псевдослучайную последовательность символов удобную для запоминания</p>
+<div class="highlight"><pre><span class="c"># generate 2 passwords of 8 chars length each</span>
+<span class="nv">$ </span>pwgen -nA 8 2
+aafaba3w mee6esho
+</pre></div>
+
+
+<h2>apg</h2>
+<p>Генерирует псевдослучайную последовательность символов удобную для запоминания и произношения</p>
+<div class="highlight"><pre><span class="nv">$ </span>apg -n1 -t -a0
+WoonMirg; <span class="o">(</span>Woon-Mirg-SEMICOLON<span class="o">)</span>
+</pre></div>
+
+
+<h2>makepasswd</h2>
+<p>Генерирует псевдослучайную последовательность символов, а также шифрует пароли с солью</p>
+<div class="highlight"><pre><span class="c"># generates 2 passwords of 20 chars each</span>
+<span class="nv">$ </span>makepasswd --char 20 --count 2
+pdfvDKXNth144SEtcGpJ
+m5Qoe1PQQBFDd69qJYSz
+
+<span class="c"># ************************</span>
+
+<span class="c"># encrypt a password (instead of generating)</span>
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;secret-password&#39;</span> &gt; /tmp/pwd.txt
+
+<span class="c"># аналогично --cryptsalt 0</span>
+<span class="nv">$ </span>makepasswd --clearfrom /tmp/pwd.txt --crypt
+secret-password   hXY1bRcse3XNk
+<span class="nv">$ </span>makepasswd --clearfrom /tmp/pwd.txt --crypt
+secret-password   EmUq/db.hXCT.
+
+<span class="nv">$ </span>makepasswd --clearfrom /tmp/pwd.txt --crypt --cryptsalt 1
+secret-password   aaBoSGSDWKUC2
+<span class="nv">$ </span>makepasswd --clearfrom /tmp/pwd.txt --crypt --cryptsalt 1
+secret-password   aaBoSGSDWKUC2
+
+<span class="nv">$ </span>makepasswd --clearfrom /tmp/pwd.txt --crypt-md5
+secret-password   <span class="nv">$1$CQz7qJqd$Io6ZfCeXdP0gKWYa3</span>/CMm0
+<span class="nv">$ </span>makepasswd --clearfrom /tmp/pwd.txt --crypt-md5
+secret-password   <span class="nv">$1$vTsHxl6j$dFvR</span>.mqYF/SP3kysqCM/s/
+</pre></div>
+
+
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:coelhorjc">
+<p><a href="https://coelhorjc.wordpress.com/2015/04/07/how-to-generate-random-and-store-key-derived-passwords-in-linux-using-pwgenapgmakepasswdmkpasswd-and-cryptbcryptscrypt/">How to generate (random) and store (key-derived) passwords in Linux (using pwgen/apg/makepasswd/mkpasswd and crypt/bcrypt/scrypt)</a>&#160;<a class="footnote-backref" href="#fnref:coelhorjc" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+        </div>
+    </article>
+    <footer class="content">
+        <span>&copy; 2016 
+            Николай Волков</span>
+        <span class="separator">::</span>
+            <span class="social"><a href="https://bitbucket.org/FRiMN/">Bitbucket</a></span>
+            <span class="social"><a href="https://github.com/FRiMN">GitHub</a></span>
+    </footer>
+
+    <script type="text/javascript">
+        var $headers = $("body > article > .text h2");
+        var $mainHeader = $("body > article > header");
+        
+
+        // Подготовка списка содержания
+        var id = 0;
+        var toc_list = []
+        $headers.each(function (index) {
+            id = index+1;
+            $(this).attr('id', id);
+            toc_list.push([id, $(this).text()]);
+        })
+
+
+        // Генерация боковой панели
+        var compiled = _.template('<div class="toc"> <h4>Содержание</h4> <ol> <% _.each(list, function(item) { %> <li><a href="#<%= item[0] %>"><%= item[1] %></a></li> <% }) %> </ol> <a class="up" href="#">Наверх</a> </div>');
+
+        if (toc_list.length > 1) {
+            var tocContainer = compiled({list : toc_list});
+
+            var $tocContainer = $(tocContainer);
+            $("body > article").append($tocContainer);
+
+
+            // Позиционирование боковой панели
+            var reposition = function() {
+                if ( $(window).scrollTop() < $mainHeader.height() ) {
+                    $tocContainer.css('top', $mainHeader.height() - $(window).scrollTop());
+                } else {
+                    $tocContainer.css('top', '');
+                }
+            }
+            reposition();
+            $(window).scroll(reposition);
+        }
+        
+
+        // Установка анкоров на заголовки
+        $headers.each(function(index) {
+            $(this).prepend('<span class="anchor-link"><a href="#'+$(this).attr('id')+'">#</a></span>')
+        });
+
+
+        // Копирование сносок к тексту
+        var footnotesList = {};
+        var $footnotes = $("div.footnote li > p");
+        // console.log($footnotes)
+        $footnotes.each(function(index) {
+            footnotesList[ $(this).find('a.footnote-backref').attr('href') ] = $(this);
+        });
+        // console.log(footnotesList)
+
+        var paragraphs = {}
+        $('a.footnote-ref').each(function(index) {
+            var id;
+            var fnLink = $(this).parent('sup').attr('id');
+            var $container = $(this).parents('p');
+
+            if ( $container.children('.side-footnotes').length === 0 ) {
+                id = _.uniqueId("sfn-");
+                $container.append('<div id="'+id+'" class="side-footnotes">');
+            } else {
+                id = $container.children('.side-footnotes').attr('id');
+            }
+            paragraphs[id] = paragraphs[id] || [];
+            paragraphs[id].push(fnLink);
+            paragraphs[id] = _.uniq(paragraphs[id]);
+        })
+
+        _(paragraphs).each(function(value, key, plist) {
+            var $container = $('#'+key);
+            var $p = $container.parent();
+            var fnnums = [];
+
+            $p.find('a.footnote-ref').each(function() {
+                fnnums.push( $(this).parent('sup') );
+            }).hover(function() {
+                $container.addClass('hover');
+            }, function() {
+                $container.removeClass('hover');
+            });;
+
+            _(value).each(function(element, index, fnlist) {
+                var fnnum = _(fnnums).find(function(item) {
+                    return item.attr('id') === element;
+                });
+                // console.log(fnnum, element, footnotesList)
+                var E = $( footnotesList[ '#'+element ].clone() );
+                E.prepend('<span class="fnnum">'+fnnum.children('a.footnote-ref').text()+'</span>');
+                E.find('a.footnote-backref').remove();
+                $container.append( E );
+                fnnum.hover(function() {
+                    E.find('a').addClass('hover');
+                }, function() {
+                    E.find('a').removeClass('hover');
+                });
+            })
+        })
+    </script>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter36832450 = new Ya.Metrika({
+                    id:36832450,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    trackHash:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/36832450" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</body>
+</html>
