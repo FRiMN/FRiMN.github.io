@@ -267,16 +267,20 @@ body > article > header .summary {
 }
 
 article blockquote {
-    text-align: right;
+    /* text-align: right; */
+    text-align: left;
     color: #300;
     margin: 3em 0;
-    /* opacity: 0.8; */
+    opacity: 0.9;
     font-style: oblique;
     font-size: 0.85em;
-    padding-left: 120px;
+    /* padding-left: 120px; */
+    padding: 0 2em 0 0.5em;
 }
 article blockquote cite {
     display: block;
+    margin-top: 0.8em;
+    text-align: right;
 }
 
 article p + p {
@@ -356,6 +360,11 @@ body > footer .social + .social:before {
     -webkit-transition:opacity 0.5s ease 0s;
     transition: opacity 0.5s ease 0s;
     background-color: white;
+    max-height: 98%;
+    overflow-y: scroll;
+}
+.toc h4 {
+    margin-top: 0;
 }
 .toc.hover,
 .toc:hover {
@@ -364,6 +373,10 @@ body > footer .social + .social:before {
 .toc ol {
     list-style: inside decimal none;
     margin-bottom: 0.5em;
+}
+ol > ol.li,
+.toc li.level-3 {
+    margin-left: 1em;
 }
 
 @media screen and (max-width: 1150px) {
@@ -377,7 +390,7 @@ body > footer .social + .social:before {
     /* left: 650px; */
     right: -280px;
     top: 0;
-    font-size: 0.6rem;
+    font-size: 0.68rem;
     width: 250px;
     opacity: 0.3;
     -webkit-transition:opacity 0.5s ease 0s;
@@ -386,6 +399,8 @@ body > footer .social + .social:before {
     text-align: left;
     color: #222;
     font-style: normal;
+    padding: 0.5em;
+    margin-top: -0.2em;
 }
 .side-footnotes.hover,
 .side-footnotes:hover {
