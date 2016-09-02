@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <title>{% block title %}Welcome{% endblock %} — blog</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="{{ "/static/images/Chi's Sweet Home.ico"|url }}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+    <meta name='yandex-verification' content='6b08ea9986ab5946' />
+    
+    <link rel="stylesheet" href="{{ '/static/css/main.css'|url }}" />
+    <!-- <link rel="stylesheet" href="{{ '/static/css/pygment.css'|url }}" /> -->
+
+    <script type="text/javascript" src="https://yastatic.net/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://yastatic.net/underscore/1.8.3/underscore-min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/2.2.0/fuse.min.js"></script>
+</head>
+<body>
+    <h4 class="site-name"></h4>
+    <article>
+        <header style="background-image: url(
+                {{ '/static/images/code-1.jpg'|url }}
+        );
+            background-position: center;
+        ">
+            <div class="content">
+                <h1>Список статей</h1>
+            </div>
+        </header>
+
+        <div class="content">
+            <input type="text" class="search" placeholder="Search it!"></input>
+        
+            <div class="count"><small>Найдено <b><span class="num"></span></b> статей.</small></div>
+            <ol class="results"></ol>
+
+            {% block body %}{% endblock %}
+        </div>
+    </article>
+    <footer class="content">
+        <span>&copy; 2016
+            Николай Волков</span>
+    </footer>
+
+    <script type="text/javascript">
+        // QueryString
+        var qs = (function(a) {
+            if (a == "") return {};
+            var b = {};
+            for (var i = 0; i < a.length; ++i)
+            {
+                var p=a[i].split('=', 2);
+                if (p.length == 1)
+                    b[p[0]] = "";
+                else
+                    b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+            }
+            return b;
+        })(window.location.search.substr(1).split('&'));
+
+
+        var articles = [ {%- for article in this.children %} 
+            {
+                title: "{{ article.title|e }}", 
+                category: "{{ article.category|e }}", 
+                url: "{{ article|url }}", 
+                summary: "{{ article.summary|striptags|e }}", 
+                tags: "{{ article.tags|join(', ') }}", 
+            },
+        {% endfor -%}];
+
+        var options = {
+            keys: ['title', 'category', 'tags', 'summary']
+        }
+
+        var fuzzy = new Fuse(articles, options);
+
+        var search = function(searchString) {
+            var searchString = searchString || '';
+
+            $(".results").html('');
+
+            var result = articles;
+            if (searchString.length > 0) {
+                var result = fuzzy.search(searchString);
+            }
+
+            var compiled = _.template('<% _.each(items, function(item) { %> \
+                        <li><a href="<%= item.url %>"> \
+                            <h3><%= item.title %></h3> \
+                            <%= item.summary %> \
+                            <p><small> \
+                                <span class="category"><%= item.category %></span> \
+                                <span class="tags"><%= item.tags %></span> \
+                            </small></p> \
+                        </a></li> \
+                    <% }) %>');
+
+            var filter = compiled({ items: result });
+
+            var $filter = $(filter);
+            $(".results").append($filter);
+
+            $('.count .num').text( result.length )
+        }
+
+        $('.search').val( qs["q"] );
+        search( qs["q"] );
+
+        $(".search").on('input', function(event) {
+            search( $(this).val() );
+        });
+    </script>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter36832450 = new Ya.Metrika({
+                    id:36832450,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    trackHash:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/36832450" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</body>
+</html>
