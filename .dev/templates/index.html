@@ -30,7 +30,7 @@
         <div class="content">
             <input type="text" class="search" placeholder="Search it!"></input>
         
-            <div class="count"><small>Найдено <b><span class="num">5</span></b> статей.</small></div>
+            <div class="count"><small>Найдено <b><span class="num">{{ articles|count }}</span></b> статей.</small></div>
             <ol class="results"></ol>
         </div>
     </article>
@@ -57,52 +57,16 @@
         })(window.location.search.substr(1).split('&'));
 
 
-        var articles = [ 
+        var articles = [ {%- for article in articles %} 
             {
-                title: "Кончай программировать!", 
-                category: "library", 
-                date: "2016-04-14T00:00:00", 
-                url: "/stop_programming.html", 
-                summary: "О ленивых программистах", 
-                tags: "valve, перевод, Ньюман, facepunch", 
+                title: "{{ article.title|e }}", 
+                category: "{{ article.category|e }}", 
+                date: "{{ datetime(article.date, '%Y-%m-%d').isoformat() }}", 
+                url: "{{ article.url }}", 
+                summary: "{{ article.summary|striptags|e }}", 
+                tags: "{{ article.tags|join(', ') }}", 
             },
-         
-            {
-                title: "Сравнение СУБД", 
-                category: "library", 
-                date: "2016-09-02T00:00:00", 
-                url: "/best_bd.html", 
-                summary: "Сравнение различных баз данных", 
-                tags: "перевод", 
-            },
-         
-            {
-                title: "Тёмная сторона JavaScript", 
-                category: "tutorial", 
-                date: "2016-03-13T00:00:00", 
-                url: "/dark_side_javascript.html", 
-                summary: "Баги и малоизвестные особенности JavaScript", 
-                tags: "js, bugs", 
-            },
-         
-            {
-                title: "Генерация соли", 
-                category: "tutorial", 
-                date: "2016-05-04T00:00:00", 
-                url: "/generate_hash_string.html", 
-                summary: "Генерация строк из случайной последовательности символов (соли и т.п.)", 
-                tags: "sh, unix, password, hash", 
-            },
-         
-            {
-                title: "Про фреймворки", 
-                category: "library", 
-                date: "2016-04-13T00:00:00", 
-                url: "/fabrics.html", 
-                summary: "Несколько статей о пробемах сложности и фреймворков", 
-                tags: "Braithwaite, frameworks, fun", 
-            },
-        ];
+        {% endfor -%}];
 
         var options = {
             keys: ['title', 'category', 'tags', 'summary']
