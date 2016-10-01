@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Freezeman Blog</title>
+    <title>Freezeman Blog :: Магия на кончиках пальцев</title>
     <meta charset="utf-8">
     <link rel="shortcut icon" href="/assets/images/Chi's Sweet Home.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,7 @@
 
     <script type="text/javascript" src="https://yastatic.net/jquery/2.2.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://yastatic.net/underscore/1.8.3/underscore-min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/2.2.0/fuse.min.js"></script>
+    <script type="text/javascript" src="/assets/js/fuse.min.js"></script>
 </head>
 <body>
     <h4 class="site-name">Blog</h4>
@@ -30,14 +30,17 @@
         <div class="content">
             <input type="text" class="search" placeholder="Search it!"></input>
         
-            <div class="count"><small>Найдено <b><span class="num">5</span></b> статей.</small></div>
+            <div class="count"><small>Найдено <b><span class="num">6</span></b> статей.</small></div>
             <ol class="results"></ol>
         </div>
     </article>
     <footer class="content">
-        <span>(c) 2016
+        <span>&copy; 2016
             Николай Волков</span>
         <span class="separator">::</span>
+        <a href="https://github.com/FRiMN">GitHub</a>
+        <span class="separator">::</span>
+        <a href="https://bitbucket.org/FRiMN/">Bitbucket</a>
     </footer>
 
     <script type="text/javascript">
@@ -61,16 +64,16 @@
             {
                 title: "Кончай программировать!", 
                 category: "library", 
-                date: "2016-04-14T00:00:00", 
+                date: "14 Apr 2016", 
                 url: "/stop_programming.html", 
                 summary: "О ленивых программистах", 
-                tags: "valve, перевод, Ньюман, facepunch", 
+                tags: "facepunch, Ньюман, valve, перевод", 
             },
          
             {
                 title: "Сравнение СУБД", 
                 category: "library", 
-                date: "2016-09-02T00:00:00", 
+                date: "02 Sep 2016", 
                 url: "/best_bd.html", 
                 summary: "Сравнение различных баз данных", 
                 tags: "перевод", 
@@ -79,28 +82,37 @@
             {
                 title: "Тёмная сторона JavaScript", 
                 category: "tutorial", 
-                date: "2016-03-13T00:00:00", 
+                date: "13 Mar 2016", 
                 url: "/dark_side_javascript.html", 
                 summary: "Баги и малоизвестные особенности JavaScript", 
-                tags: "js, bugs", 
+                tags: "bugs, js", 
             },
          
             {
                 title: "Генерация соли", 
                 category: "tutorial", 
-                date: "2016-05-04T00:00:00", 
+                date: "04 May 2016", 
                 url: "/generate_hash_string.html", 
                 summary: "Генерация строк из случайной последовательности символов (соли и т.п.)", 
-                tags: "sh, unix, password, hash", 
+                tags: "sh, password, hash, unix", 
             },
          
             {
                 title: "Про фреймворки", 
                 category: "library", 
-                date: "2016-04-13T00:00:00", 
+                date: "13 Apr 2016", 
                 url: "/fabrics.html", 
                 summary: "Несколько статей о пробемах сложности и фреймворков", 
-                tags: "Braithwaite, frameworks, fun", 
+                tags: "fun, frameworks, Braithwaite", 
+            },
+         
+            {
+                title: "Blocknote", 
+                category: "projects", 
+                date: "02 Oct 2016", 
+                url: "/blocknote.html", 
+                summary: "Генератор статических сайтов из mk файлов", 
+                tags: "jinja2, blog, python, pygments, project", 
             },
         ];
 
@@ -123,6 +135,7 @@
             var compiled = _.template('<% _.each(items, function(item) { %> \
                         <li><a href="<%= item.url %>"> \
                             <h3><%= item.title %></h3> \
+                            <span class="date"><%= item.date %></span> \
                             <%= item.summary %> \
                             <p><small> \
                                 <span class="category"><%= item.category %></span> \

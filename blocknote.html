@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Кончай программировать!</title>
+    <title>Blocknote</title>
     <meta charset="utf-8">
     <link rel="shortcut icon" href="/assets/images/Chi's Sweet Home.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,17 +19,17 @@
     <h4 class="site-name"><a href="/index.html">Магия на кончиках пальцев</a></h4>
     <article>
         <header style="background-image: url(
-                /assets/images/stardust.jpeg
+                /assets/images/b1.jpg
             );
                 
-            background-position: center center;
+            background-position: center 50%;
         ">
             <div class="content">
-                <h1>Кончай программировать!</h1>
+                <h1>Blocknote</h1>
                 
 
                 <div class="summary">
-                    О ленивых программистах
+                    Генератор статических сайтов из mk файлов
                 </div>
             </div>
         </header>
@@ -38,8 +38,8 @@
             <div class="info">
             
                 <div>Публикация от
-                    <b><time pubdate datetime="2016-04-14T00:00:00">
-                        14 Apr 2016 
+                    <b><time pubdate datetime="2016-10-02T00:00:00">
+                        02 Oct 2016 
                     </time></b>
                 </div>
                 
@@ -47,35 +47,52 @@
             
                 <div class="tags">
                     
-                        #<a href="/index.html?q=%23facepunch">facepunch</a>
+                        #<a href="/index.html?q=%23jinja2">jinja2</a>
                     
-                        #<a href="/index.html?q=%23Ньюман">Ньюман</a>
+                        #<a href="/index.html?q=%23blog">blog</a>
                     
-                        #<a href="/index.html?q=%23valve">valve</a>
+                        #<a href="/index.html?q=%23python">python</a>
                     
-                        #<a href="/index.html?q=%23перевод">перевод</a>
+                        #<a href="/index.html?q=%23pygments">pygments</a>
+                    
+                        #<a href="/index.html?q=%23project">project</a>
                     
                 </div>
             
             
                 <div class="category">
-                    /<a href="/index.html?q=%2Flibrary">library</a>
+                    /<a href="/index.html?q=%2Fprojects">projects</a>
                 </div>
             
             </div>
 
-            <p><small>
-<em><strong>Оригинал:</strong> <a href="https://garry.tv/2013/10/17/stop-programming/">https://garry.tv/2013/10/17/stop-programming/</a> (Гарри Ньюман / Facepunch Studios)
-<br>
-<strong>Перевод:</strong> Николай Волков</em>
-</small></p>
-<p>На прошлой неделе я должен был сказать одному из наших кодеров быть более ленивым и меньше работать. Это, вероятно, звучит как сумасшедшая идея для босса.</p>
-<p>Вот хорошая цитата от Билла Гейтса:</p>
-<blockquote>
-<p>Для тяжелой работы я выберу ленивого человека. Потому что ленивый человек будет искать простое решение.</p>
-</blockquote>
-<p>Некоторое время назад я присутствовал на совещании Valve о процессе их занятости. Кто-то в зале поднял руку и спросил, наняли ли они младших программистов. Спикер сказал, что нет. Член аудитории спросил, почему нет? Кто делает всё дерьмо, решает скучные программистские задачи? По словам спикера, такое отношение было раньше, теперь здесь нет дерьма или скучных задач. Если вы дадите эту задачу хорошему программисту, то он решит её таким образом, чтобы уже никто не имел дело с этой проблемой снова. Младший программист будет решать её снова и снова. Добавлять все больше и больше кода для поддержки, все больше и больше вещей, которые могуть сломаться.</p>
-<p>Поэтому, говоря нашим программистам, успокоиться, быть более ленивыми - я не снижаю производительность, а увеличиваю ее. Чем меньше кода, тем меньше шансов, что вы решаете проблему, которой не существует. Тем меньше шансов, что вы оптимизируете материал, который не нуждается в оптимизации. Чем меньше кода, тем меньше возможных ошибок, тем меньше времени требуется на поддержку кода. Все счастливы.</p>
+            <h2>Предистория</h2>
+<p>Изначально блог генерировался Pelican, но терпению моему пришел конец. Куча скриптов и обязательный допил удручали.
+Решил посмотреть на другие решения. Lektor показался мне слишком уж сложным. Некоторые требуют написание моделей, другим необходима сложная структура каталогов. Совсем упоротые хотят базу данных (O_o).</p>
+<p>Основная проблема многих генераторов в том, что они имеют высокий порог вхождения. Требуют много ненужных действий, и обладают магией. Их архитектура сложна и перепил любого из них вызовет анальную боль.</p>
+<p>По-этому возникло желание написать маленький, лёгкий для перепила генератор статических сайтов. Естественно на Python.</p>
+<h2>Архитектура</h2>
+<div class="highlight"><pre>.
+├── assets
+│   ├── css
+│   │   ├── *.css
+│   │   └── pygment.css
+│   ├── images
+│   │   └── *.jpg
+│   └── js
+│       └── *.js
+├── .dev
+│   ├── blocknote.py
+│   ├── conf.py
+│   ├── posts
+│   │   └── &lt;posts&gt;.md
+│   └── templates
+│       ├── article.html
+│       ├── index.html
+│       └── project.html
+├── index.html
+└── &lt;posts&gt;.html
+</pre></div>
         </div>
     </article>
     <footer class="content">
