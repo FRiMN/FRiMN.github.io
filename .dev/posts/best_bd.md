@@ -2,7 +2,7 @@ Title: Сравнение СУБД
 Slug: best_bd
 Date: 2016-09-02
 Category: library
-Tags: перевод
+Tags: перевод, draft
 Summary: Сравнение различных баз данных
 
 

@@ -15,12 +15,14 @@ def cli():
 
 
 @click.command()
-def make():
+@click.option('--cache/--no-cache', default=True, help="Use cache (default use)")
+def make(cache):
     """ Generate HTML from mk files and templates """
     # TODO: cleaning dir
-    posts = traverse_dir()
+    posts = traverse_dir(cache)
     make_html(posts)
     make_index(posts)
+    set_cache()
 
 
 @click.command()
@@ -32,7 +34,11 @@ def serve():
     from twisted.web.static import File
     from twisted.internet import reactor
 
-    reactor.listenTCP(8000, Site(File("..")))
+    port = 8000
+
+    print('Starting web server on localhost:{}...'.format(port))
+
+    reactor.listenTCP(port, Site(File("..")))
     reactor.run()
 
 
@@ -40,13 +46,36 @@ cli.add_command(make)
 cli.add_command(serve)
 
 
-def traverse_dir():
+def set_cache():
+    now = datetime.datetime.now().timestamp()
+
+    with open(".cache", "w") as f:
+        print(now, file=f)
+
+
+def get_cache():
+    with open(".cache", "r") as f:
+        t = float(f.readline())
+
+    return t
+
+
+def traverse_dir(use_cache):
     # traverse root directory, and list directories as dirs and files as files
     posts = []
     for root, dirs, files in os.walk("./posts"):
         for filename in files:
             post = {}
             full_path = os.path.join(root, filename)
+            # print(full_path)
+            in_cache = False
+            if use_cache:
+                ct = get_cache()
+                t = os.stat(full_path).st_mtime
+                # print(t)
+                if ct > t:
+                    in_cache = True
+            post['_in_cache'] = in_cache
             with open(full_path) as f:
                 lines = f.readlines()
                 meta_flag = True
@@ -72,11 +101,13 @@ def traverse_dir():
                         else:
                             post[key] = val
                     else:
-                        post["text"] = post["text"] + line
-            post['text'] = markdown.markdown(post['text'], extensions=[
-                'markdown.extensions.footnotes',
-                'markdown.extensions.codehilite(css_class=highlight)',
-            ])
+                        if not in_cache:
+                            post["text"] = post["text"] + line
+            if not in_cache:
+                post['text'] = markdown.markdown(post['text'], extensions=[
+                    'markdown.extensions.footnotes',
+                    'markdown.extensions.codehilite(css_class=highlight)',
+                ])
             if 'slug' in post:
                 filename = post['slug']
             else:
@@ -101,24 +132,26 @@ def make_html(posts):
                             print("\033[35mSkip\033[39m generate HTML for \033[33m{}\033[39m ({})".format(post['title'], post['_source_path']))
                             posts.remove(post)
                         continue
-                    print("Generate HTML for \033[33m{}\033[39m ({} --> {})".format(post['title'], post['_source_path'], post['url']))
 
-                    if template_tag in post['tags']:
-                        # print(template_tag, '::', post['tags'])
-                        post['tags'].remove("")
-                        html = template.render(
-                            article=post,
-                            datetime=datetime.datetime.strptime
-                        )
+                    if not post['_in_cache']:
+                        print("Generate HTML for \033[33m{}\033[39m ({} --> {})".format(post['title'], post['_source_path'], post['url']))
 
-                        url = "..{}".format(post['url'])
-                        # print("\t{}".format(url))
-                        with open(url, "w") as h:
-                            print(html, file=h)
+                        if template_tag in post['tags']:
+                            # print(template_tag, '::', post['tags'])
+                            post['tags'].remove("")
+                            html = template.render(
+                                article=post,
+                                datetime=datetime.datetime.strptime
+                            )
 
-                        # print('\tdone')
-                        post['_status'] = 'done'
-                    # print('\tdone?')
+                            url = "..{}".format(post['url'])
+                            # print("\t{}".format(url))
+                            with open(url, "w") as h:
+                                print(html, file=h)
+
+                            # print('\tdone')
+                            post['_status'] = 'done'
+                        # print('\tdone?')
                 # print('end posts')
         except FileNotFoundError:
             print("\033[31mError:\033[39m template \033[33m{}\033[39m not found.".format(template_path))
