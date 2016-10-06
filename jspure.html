@@ -1,0 +1,447 @@
+<!doctype html>
+<html>
+<head>
+    <title>Ваши функции действительно чистые?</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/assets/images/Chi's Sweet Home.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/pygment.css" />
+
+    
+
+    <script type="text/javascript" src="https://yastatic.net/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://yastatic.net/underscore/1.8.3/underscore.js"></script>
+</head>
+<body>
+    <h4 class="site-name"><a href="/index.html">Магия на кончиках пальцев</a></h4>
+    <article>
+        <header style="background-image: url(
+                /assets/images/stardust.jpeg
+            );
+                
+            background-position: center center;
+        ">
+            <div class="content">
+                <h1>Ваши функции действительно чистые?</h1>
+                
+
+                <div class="summary">
+                    О чистоте функций в JavaScript
+                </div>
+            </div>
+        </header>
+        
+        <div class="text content">
+            <div class="info">
+            
+                <div>Публикация от
+                    <b><time pubdate datetime="2016-10-07T00:00:00">
+                        07 Oct 2016 
+                    </time></b>
+                </div>
+                
+            
+            
+                <div class="tags">
+                    
+                        #<a href="/index.html?q=%23js">js</a>
+                    
+                        #<a href="/index.html?q=%23Staltz">Staltz</a>
+                    
+                        #<a href="/index.html?q=%23pure">pure</a>
+                    
+                        #<a href="/index.html?q=%23перевод">перевод</a>
+                    
+                </div>
+            
+            
+                <div class="category">
+                    /<a href="/index.html?q=%2Flibrary">library</a>
+                </div>
+            
+            </div>
+
+            <p><small>
+<em><strong>Оригинал:</strong> <a href="http://staltz.com/is-your-javascript-function-actually-pure.html">http://staltz.com/is-your-javascript-function-actually-pure.html</a> (André Staltz)</em></p>
+<p>В русскоязычной практике не применяется термин, аналогичный английскому "<em>impure</em>". В данном переводе он иногда заменяется нетипичным "<em>нечистая</em>".
+</small></p>
+<p>Что значит "чистая функция" в контексте JavaScript? В программировании в целом, чистота также известна как "<a href="https://en.wikipedia.org/wiki/Referential_transparency">referential transparency</a>", иначе говоря “<em>замена выражения или вызова функции ее результатом никогда не изменит поведение программы</em>” или “<em>каждый раз, когда вы передаете те же входные данные, вы всегда получаете тот же результат</em>”.</p>
+<p>Кажется интуитивно, и функция вроде <code>x =&gt; x * 10</code> выглядит чистой, т.к. каждый раз, как вы передаете в неё число <em>3</em> в качестве аргумента вы получаете <em>30</em> на выходе. Так как мы можем определить, что одна функция чистая, а другая -- нет? Достаточно ли для этого просто прочитать код?</p>
+<p>Давайте посмотрим на мнения людей. Вчера (25 авг 2016) Я запустил в Twitter <a href="https://twitter.com/andrestaltz/status/768833714990309376">голосование</a> “Чистая или нет?” с тремя вариантами ответа:</p>
+<ul>
+<li>Чистая</li>
+<li>Нечистая</li>
+<li>Не уверен</li>
+</ul>
+<p>Со следующим кодом.</p>
+<div class="highlight"><pre><span class="kd">function</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">z</span> <span class="o">+=</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">z</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Вот результаты опроса:</p>
+<ul>
+<li>Целых 74% думают, что она чистая</li>
+<li>18% считают, что нет</li>
+<li>8% не уверены</li>
+</ul>
+<p>Понятно, почему большинство людей думают, что она чистая: даже если используются мутации внутри, получая массив со значениями <code>[1, 2, 3]</code> в качестве аргумента, вы всегда получите <em>6</em> на выходе. Каждый. Грёбаный. Раз.</p>
+<p>Но также понятно, почему 18% считают, что она не является чистой: тело функции использует грязные выражения с побочными эффектами. В конце концов, я спросил “Чистая или нет?”, а не “эта <strong>функция</strong> чистая?”.</p>
+<p>Удивительно то, что оба лагеря ошибаются. Те самые, "неуверенные" 8% были правы: это зависит от поведения во время выполнения. Просто прочитав функцию, мы не можем быть уверены. В самом деле, 18%, которые думают, что она не чистая, “более правы”, чем 74%, считающих её чистой, потому что бывают случаи, когда <code>sum</code> не будет чистой.</p>
+<p>Код обманчиво простой, и в то время как мы читаем его, как люди мы, естественно, делаем предположения. Вот несколько предположений, которые вы сделали, вероятно, без явного понимания:</p>
+<ul>
+<li><em>sum</em> означает, что эта функция на самом деле сумма чисел (почему не Suppress Universal Macro?)</li>
+<li><em>arr</em> означает <em>“array”</em> (почему не “arrow” или “arrivals”?)</li>
+<li><em>arr</em> на самом деле массив</li>
+<li><em>arr</em> не <em>null</em> и не <em>undefined</em></li>
+<li>Элементы массива -- числа</li>
+<li>Функции <em>valueOf</em> элементов массива не подделаны</li>
+</ul>
+<p>Но, вот проблема: все эти предположения могут провалиться, и приведенный выше код не скажет вам об этом. Вот несколько способов, как мы можем сломать функцию и сделать её грязной:</p>
+<div class="highlight"><pre><span class="nx">sum</span><span class="p">();</span> <span class="c1">// TypeError: Cannot read property &#39;length&#39; of undefined</span>
+
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[{},</span> <span class="p">{},</span> <span class="p">{}];</span>
+<span class="nx">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">valueOf</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">valueOf</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">valueOf</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">;</span>
+<span class="nx">sum</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span> <span class="c1">// 2.393660612848899</span>
+<span class="nx">sum</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span> <span class="c1">// 2.3418339292845998</span>
+<span class="nx">sum</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span> <span class="c1">// 2.15048094452324</span>
+<span class="c1">// Одинаковые аргументы, разный результат!</span>
+</pre></div>
+
+
+<p>Итак, <code>sum</code> -- нечистая функция.</p>
+<p>Не так быстро! Все функции JavaScript на самом деле являются “процедурами”. Чистая функция -- это просто “процедура”, которая <strong>ведёт себя</strong> как математическая функция, единственно верная чистая функция. Это и есть разница между <em>функцией</em> и "функцией". Мы можем только сказать, что “моя функция JavaScript, в данном случае, ведет себя как математическая функция”.</p>
+<p>Я предполагаю, что вы знаете, о чем я говорю, но даю подсказку: математическая функция -- это отношение определенное на множестве, отображаемом в другое множество. Например, мы могли бы сказать, что <code>sum</code> работает только с массивами чисел. Массивы объектов не поддерживаются. <sup id="fnref:Func"><a class="footnote-ref" href="#fn:Func" rel="footnote">1</a></sup></p>
+<p>Итак, возвращаясь к JavaScript, функция <code>sum</code> будет вести себя как математическая функция, в зависимости от того, как вы используете её. Если это вся ваша программа:</p>
+<div class="highlight"><pre><span class="kd">function</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">z</span> <span class="o">+=</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">z</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">z</span> <span class="o">=</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Тогда, конечно, <code>sum</code> будет чистой функцией! Она <strong>ведёт</strong> себя как математическая функция. Поставьте её в другую ситуацию, и она перестанет вести себя как математическая функция.</p>
+<p>Так вот, ответ: зависит от ситуации. Что означает: взяв любую функцию JavaScript, в большинстве случаев Вы не можете знать, чистая она или нет, просто прочитав код. Вы должны знать, как эта функция вызывается и с какими аргументами.</p>
+<p>Помните, наши невинные <code>х =&gt; х * 10</code>? Бедняга. Мы даже не можем сказать, что <em>эта</em> функция чистая. Посмотрите, она не является чистой:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">{};</span> <span class="nx">a</span><span class="p">.</span><span class="nx">valueOf</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">10</span><span class="p">;</span>
+<span class="nx">fn</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span> <span class="c1">// 5.107926817373938</span>
+<span class="nx">fn</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span> <span class="c1">// 3.4100775757245416</span>
+<span class="nx">fn</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span> <span class="c1">// 5.1903831613695095</span>
+<span class="c1">// Одинаковый вызов, разный результат!</span>
+</pre></div>
+
+
+<p>Чёрт возьми! Есть ли вообще что-нибудь чистое в JavaScript? Вы могли бы сказать: “это неважно, потому что на практике мы не встретим этих странных случаев, которые ты придумал”. Действительно, мы не будем <em>valueOf</em> подменять <em>Math.random</em>.</p>
+<p>Пока... в один прекрасный день мы это не сделаем. Вы знаете, те самые сложные ошибки, с которыми вы боретесь иногда? Можно подумать, что в JavaScript за этим стоит черная магия. Он проклят. Происходит что-то мистическое. Эти мистические случаи обычно происходят потому, что что-то где-то там случилось, что-то, что вы не предполагали. Да, теперь это кажется знакомым, верно?</p>
+<p>Итак, мы прокляты? <code>х =&gt; х * 10</code> -- это так мило и просто в использовании, но эта функция также не является чистой абсолютно всегда. Есть ли что-нибудь чистое на JavaScript? Чистота в JavaScript вообще возможна? Этот ваш JavaScript совершенно нечистый?</p>
+<p>Ну, нет. Вот как мы можем сделать <code>sum</code> <em>похожей</em> на математическую функцию:</p>
+<div class="highlight"><pre><span class="kd">function</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">arr</span><span class="p">)</span> <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">arr</span> <span class="o">!==</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">arr</span><span class="p">))</span> <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">&#39;number&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">z</span> <span class="o">+=</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">z</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Что, если кто-то подменил <em>Array.isArray</em>?</p>
+<div class="highlight"><pre><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span> <span class="o">=</span> <span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">;</span>
+</pre></div>
+
+
+<p>Ладно, подождите минутку:</p>
+<div class="highlight"><pre> <span class="kd">function</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">arr</span><span class="p">)</span> <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">arr</span> <span class="o">!==</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+<span class="hll"><span class="o">+</span>  <span class="k">if</span> <span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">!==</span> <span class="s1">&#39;function isArray() { [native code] }&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll"><span class="o">+</span>    <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="hll"><span class="o">+</span>  <span class="p">}</span>
+</span>   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">arr</span><span class="p">))</span> <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="kd">var</span> <span class="nx">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">&#39;number&#39;</span><span class="p">)</span> <span class="p">{</span>
+       <span class="k">return</span> <span class="k">void</span> <span class="mi">0</span><span class="p">;</span>
+     <span class="p">}</span>
+     <span class="nx">z</span> <span class="o">+=</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+   <span class="p">}</span>
+   <span class="k">return</span> <span class="nx">z</span><span class="p">;</span>
+ <span class="p">}</span>
+</pre></div>
+
+
+<p>Чтобы сделать её чистой, мы в основном перечислили все предположения о входных данных. Кстати, я до сих пор чувствую себя неловко, что кто-то найдет хитрый способ сломать мою “чистую” <code>sum</code>. Список проверок нуден и делает код менее читабельным. Наверное, вы написали такой код для основных аргументов, которые являются недопустимыми. Но как я чувствовал себя неловко, так и вы. Вы уверены, что учли все случаи и возможные ситуации? Она всегда ведёт себя как математическая функция?</p>
+<p>Вот как функциональные языки программирования чисты: они позволяют легко перечислить проверки для вашей функции.</p>
+<p>В TypeScript, мы можем написать наши проверки в сигнатуре:</p>
+<div class="highlight"><pre><span class="nx">function</span> <span class="k">sum</span><span class="p">(</span><span class="nx">arr</span><span class="p">:</span> <span class="kt">Array</span><span class="o">&lt;</span><span class="nx">number</span><span class="o">&gt;</span><span class="p">):</span> <span class="nx">number</span>
+</pre></div>
+
+
+<p>Тело функции, реализующее тоже самое, что и в JavaScript:</p>
+<div class="highlight"><pre><span class="nx">function</span> <span class="k">sum</span><span class="p">(</span><span class="nx">arr</span><span class="p">:</span> <span class="kt">Array</span><span class="o">&lt;</span><span class="nx">number</span><span class="o">&gt;</span><span class="p">):</span> <span class="nx">number</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nb">for</span> <span class="p">(</span><span class="kd">var</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">arr.length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">z</span> <span class="o">+=</span> <span class="nx">arr</span><span class="err">[</span><span class="nx">i</span><span class="cp">]</span>;
+  }
+  return z;
+}
+</pre></div>
+
+
+<p>Если вы попробуете использовать эту функцию так:</p>
+<div class="highlight"><pre><span class="n">sum</span><span class="p">();</span>
+</pre></div>
+
+
+<p>Это даже не компилируется! Это значит, что ваша программа даже не “ведёт себя” в самом начале. Также и этот код не будет компилироваться:</p>
+<div class="highlight"><pre><span class="n">var</span> <span class="n">arr</span> <span class="o">=</span> <span class="p">[{},</span> <span class="p">{},</span> <span class="p">{}];</span>
+<span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">valueOf</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">valueOf</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">valueOf</span> <span class="o">=</span> <span class="n">Math</span><span class="p">.</span><span class="n">random</span><span class="p">;</span>
+<span class="n">sum</span><span class="p">(</span><span class="n">arr</span><span class="p">);</span>
+<span class="n">sum</span><span class="p">(</span><span class="n">arr</span><span class="p">);</span>
+<span class="n">sum</span><span class="p">(</span><span class="n">arr</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Впрочем, внимательный читатель увидит, что моя TypeScript'овая <code>sum</code> может быть также сломана:</p>
+<div class="highlight"><pre><span class="n">sum</span><span class="p">(</span><span class="n">null</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Компилируется успешно, но возвращает ошибки во время выполнения “TypeError: Cannot read property ‘length’ of null”. Это потому, что TypeScript pre-v2.0 считает, что этот <em>Array&lt;number></em> включает в себя <em>null</em>. Даже если мы используем TypeScript v2.1, мы можем обмануть TypeScript через приведение типов:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="n">arr</span> <span class="o">=</span> <span class="err">[</span><span class="p">{},</span> <span class="p">{},</span> <span class="p">{}</span><span class="cp">]</span> as Array<span class="nt">&lt;number&gt;</span>; // верь мне, компилятор!
+arr<span class="cp">[</span><span class="mi">0</span><span class="cp">]</span>.valueOf = arr<span class="cp">[</span><span class="mi">1</span><span class="cp">]</span>.valueOf = arr<span class="cp">[</span><span class="mi">2</span><span class="cp">]</span>.valueOf = Math.random;
+sum(arr); // 2.393660612848899
+sum(arr); // 2.3418339292845998
+sum(arr); // 2.15048094452324
+</pre></div>
+
+
+<p>Компилируется, но возвращает различные результаты для <code>sum(arr)</code>.</p>
+<p>Итак, TypeScript тоже обречен? Ну, вроде да, но гораздо меньше, чем JavaScript. TypeScript typings добавляет проверки в ваш код, так что он будет отлавливать больше случаев, чем вы обычно отлавливаете при написании наивного кода. Итак, я за TypeScript. Он помогает мне чувствовать себя немного лучше.</p>
+<p>Мы действительно можем быть уверены, что функция чиста, просто прочитав её? Ну, в актуальных функциональных языках программирования, таких как PureScript или Haskell -- да, мы можем:</p>
+<div class="highlight"><pre><span class="nf">sum</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">Int</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">Int</span>
+<span class="nf">sum</span> <span class="ow">=</span> <span class="n">foldl</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="mi">0</span>
+</pre></div>
+
+
+<p>Если Вы не понимаете синтаксис, вот важная часть: <code>[Int] -&gt; Int</code>. Это означает, что это функция, которая принимает список <em>Int</em> и возвращает только <em>Int</em>. Список не может быть <em>undefined</em>, не может быть <em>null</em>. И я не думаю, что вы можете изменять числа так, как это возможно в JavaScript. И есть много проверок, встроенных в <em>Int</em>. Это тип, который удовлетворяет многие типоклассы: <em>Num</em> (это число), <em>Ord</em> (целые числа могут быть упорядочены), <em>Eq</em> (числа могут строго сравниваться<sup id="fnref:hardequal"><a class="footnote-ref" href="#fn:hardequal" rel="footnote">2</a></sup>), <em>Show</em> (мы можем сделать удобочитаемый формат для целых чисел) и т. д. Все эти проверки отлавливают много крайних случаев. Может быть, есть некоторые ошибки времени выполнения и опасные операции в Haskell, но это чертовски хорошо делает код похожим на математическую функцию.</p>
+<h2>Заключение</h2>
+<p>Ок, так что в Haskell функции являются чистыми, и вы можете это узнать просто прочитав код. Но разве название этой статьи не о JavaScript?</p>
+<p>Я думал о чистоте в JavaScript некоторое время, потому что недавно я имел дискуссию с людьми о “оператор <a href="http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html#instance-method-scan"><em>scan</em></a> в RxJS чистый?” и я защищал его, настаивая, что он чистый. Я был неправ. На самом деле был. Это зависит от следующих факторов. Если используется вне контекста высшестоящих <em>Observable</em>, как это <a href="http://elm-lang.org/blog/farewell-to-frp">было</a> в Elm (актуальный функциональный язык программирования, в лиге Haskell и PureScript), то он чист. Он <strong>ведет себя</strong> словно математическая функция. Но, если вы используете <em>scan</em> в вышестоящих <em>Observable</em>, существует высокая вероятность, что он не будет вести себя как математическая функция.</p>
+<p>Почему все это важно? Потому что я надеюсь, что мы можем начать перенос дискуссии из “это чистая функция?” в</p>
+<blockquote>
+<p>“Эта функция ведет себя как математическая во всех ситуациях, с которыми я могу столкнуться в <strong>своём</strong> коде?”</p>
+</blockquote>
+<p>Я знаю, что это уже приговор. Я знаю, что на этот вопрос трудно найти ответ в большинстве случаев. Однако это единственное, что мы можем сделать для чистоты JavaScript. Мы не можем посмотреть на код и заявить, что он чистый. У нас было много непроверенных предположений. Давайте говорить “<em>ведет себя, как Math, в данной конкретной ситуации</em>” вместо этого.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:Func">
+<p><span>Фу́нкция (отображе́ние, опера́тор, преобразова́ние) — в математике соответствие между элементами двух множеств, установленное по такому правилу, что каждому элементу одного множества ставится в соответствие некоторый элемент из другого множества.<br>
+Математическое понятие функции выражает интуитивное представление о том, как одна величина полностью определяет значение другой величины. Так, значение переменной <em>x</em> однозначно определяет значение выражения <em>x</em><sup>2</sup>, а значение месяца однозначно определяет значение следующего за ним месяца.<br>
+Аналогично, задуманный заранее алгоритм по значению входного данного выдаёт значение выходного данного.
+-- <a href="https://ru.wikipedia.org/wiki/%D0%A4%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D1%8F_(%D0%BC%D0%B0%D1%82%D0%B5%D0%BC%D0%B0%D1%82%D0%B8%D0%BA%D0%B0)">Википедия</a></span>&#160;<a class="footnote-backref" href="#fnref:Func" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:hardequal">
+<p>Имеется ввиду оператор сравнения <strong>===</strong>&#160;<a class="footnote-backref" href="#fnref:hardequal" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+        </div>
+    </article>
+    <footer class="content">
+        <span>&copy; 2016
+            Николай Волков</span>
+        <span class="separator">::</span>
+        <a href="https://github.com/FRiMN">GitHub</a>
+        <span class="separator">::</span>
+        <a href="https://bitbucket.org/FRiMN/">Bitbucket</a>
+    </footer>
+
+    <script type="text/javascript">
+        var $headers = $("body > article > .text h2, body > article > .text h3");
+        var $headersH3 = $("body > article > .text h3");
+        var $mainHeader = $("body > article > header");
+        
+
+        // Подготовка списка содержания
+        var id = 0;
+        var toc_list = []
+        $headers.each(function (index) {
+            id = index+1;
+            $this = $(this);
+            $(this).attr('id', id);
+
+            var level = 2;
+            _.each($headersH3, function($item) {
+                if ( $this[0].id === $item.id ) {
+                    level = 3;
+                }
+            })
+            
+            // $(this).data('level', level);
+            toc_list.push([id, $(this).text(), level]);
+        })
+
+
+        // Генерация боковой панели
+        var tocT = _.template('\
+            <div class="toc">\
+                <h4>Содержание</h4>\
+                <% var prevlevel = 2; %>\
+                <ol> <% _.each(list, function(item) { %>\
+                    <% if (item[2] === 3) { %>\
+                        <% if (prevlevel === 2) { %>\
+                            <ol>\
+                        <% prevlevel = 3; } %>\
+                        <li class="level-3"><a href="#<%= item[0] %>"><%= item[1] %></a></li>\
+                    <% } else { %>\
+                        <% if (prevlevel === 3) { %>\
+                            </ol>\
+                        <% prevlevel = 2; } %>\
+                        <li><a href="#<%= item[0] %>"><%= item[1] %></a></li>\
+                    <% } %>\
+                <% }) %> </ol>\
+                <a class="up" href="#">Наверх</a>\
+            </div>\
+        ');
+
+        if (toc_list.length > 1) {
+            var tocContainer = tocT({list : toc_list});
+
+            var $tocContainer = $(tocContainer);
+            $("body > article").append($tocContainer);
+
+
+            // Позиционирование боковой панели
+            var reposition = function() {
+                if ( $(window).scrollTop() < $mainHeader.height() ) {
+                    $tocContainer.css('top', $mainHeader.height() - $(window).scrollTop());
+                    $tocContainer.css('max-height', 
+                        $(window).height() - $mainHeader.height() + $(window).scrollTop() - 16);
+                } else {
+                    $tocContainer.css('top', '');
+                    $tocContainer.css('max-height', '98%');
+                }
+            }
+            reposition();
+            $(window).scroll(reposition);
+        }
+        
+
+        // Установка анкоров на заголовки
+        $headers.each(function(index) {
+            $(this).prepend('<span class="anchor-link"><a href="#'+$(this).attr('id')+'">#</a></span>')
+        });
+
+
+        // Копирование сносок к тексту
+        var footnotesList = {};
+        var $footnotes = $("div.footnote li > p");
+        $footnotes.each(function(index) {
+            footnotesList[ $(this).find('a.footnote-backref').attr('href') ] = $(this);
+        });
+
+        var paragraphs = {}
+        $('a.footnote-ref').each(function(index) {
+            var id;
+            var fnLink = $(this).parent('sup').attr('id');
+            var $container = $(this).parents('p');
+
+            if ( $container.children('.side-footnotes').length === 0 ) {
+                id = _.uniqueId("sfn-");
+                $container.append('<div id="'+id+'" class="side-footnotes">');
+            } else {
+                id = $container.children('.side-footnotes').attr('id');
+            }
+            paragraphs[id] = paragraphs[id] || [];
+            paragraphs[id].push(fnLink);
+            paragraphs[id] = _.uniq(paragraphs[id]);
+        })
+
+        _(paragraphs).each(function(value, key, plist) {
+            var $container = $('#'+key);
+            var $p = $container.parent();
+            var fnnums = [];
+
+            $p.find('a.footnote-ref').each(function() {
+                fnnums.push( $(this).parent('sup') );
+            }).hover(function() {
+                $container.addClass('hover');
+            }, function() {
+                $container.removeClass('hover');
+            });;
+
+            _(value).each(function(element, index, fnlist) {
+                var fnnum = _(fnnums).find(function(item) {
+                    return item.attr('id') === element;
+                });
+                var E = $( footnotesList[ '#'+element ].clone() );
+                E.prepend('<span class="fnnum">'+fnnum.children('a.footnote-ref').text()+'</span>');
+                E.find('a.footnote-backref').remove();
+                $container.append( E );
+                fnnum.hover(function() {
+                    E.find('a').addClass('hover');
+                }, function() {
+                    E.find('a').removeClass('hover');
+                });
+            })
+        })
+    </script>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter36832450 = new Ya.Metrika({
+                    id:36832450,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    trackHash:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/36832450" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</body>
+</html>

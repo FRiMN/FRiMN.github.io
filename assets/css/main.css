@@ -1,3 +1,5 @@
+@import 'https://fonts.googleapis.com/css?family=PT+Serif&subset=cyrillic,cyrillic-ext';
+
 /* reset */
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
 
@@ -11,8 +13,14 @@ html, body {
     margin: 0;
     padding: 0;
     color: #222;
-    font-family: serif;
+    font-family: 'PT Serif', serif;
     -webkit-font-smoothing: antialiased;
+}
+
+sup {
+    position: relative;
+    bottom: 0.4em;
+    font-size: 0.8em;
 }
 
 .search,
@@ -54,7 +62,8 @@ ol.results {
     /* padding-left: 3em; */
 }
 .text ul {
-    list-style: outside lower-latin none;
+    /* list-style: outside lower-latin none; */
+    list-style: none;
 }
 .text ol {
     list-style: outside decimal none;
@@ -67,6 +76,11 @@ ol.results {
 .text ol {
     margin: 1em 0;
     padding-left: 3em;
+}
+.text ul li:before {
+    content: "-";
+    color: grey;
+    margin-right: 0.3em;
 }
 li > p {
     display: inline-block;
@@ -179,6 +193,15 @@ small {
 }
 .site-name a {
     color: inherit;
+}
+
+header,
+footer {
+    font-family: serif;
+}
+.info,
+.side-footnotes {
+    font-family: "Mundo Sans W01", Arial, sans-serif;
 }
 
 h1,h2,h3,h4,h5,h6 {

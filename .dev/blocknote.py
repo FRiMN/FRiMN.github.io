@@ -127,31 +127,36 @@ def make_html(posts):
             with open(template_path) as t:
                 template = Template( "".join(t.readlines()) )
                 for post in posts:
-                    if '_status' in post and post['_status'] == 'done' or 'draft' in post['tags']:
-                        if 'draft' in post['tags']:
-                            print("\033[35mSkip\033[39m generate HTML for \033[33m{}\033[39m ({})".format(post['title'], post['_source_path']))
-                            posts.remove(post)
+                    # print('p')
+                    if '_status' in post and post['_status'] == 'done':
+                        # print('s')
                         continue
+                    if 'draft' in post['tags']:
+                        print("\033[35mSkip\033[39m generate HTML for \033[33m{}\033[39m ({})".format(post['title'], post['_source_path']))
+                        # print('c')
+                        post['_status'] = 'done'
+                        continue
+                    
+                    # print('::>', post['tags'])
+                    if template_tag in post['tags']:
+                        # print(template_tag, '::', post['tags'])
+                        post['tags'].remove("")
+                        url = "..{}".format(post['url'])
+                        # print("\t{}".format(url))
 
-                    if not post['_in_cache']:
-                        print("Generate HTML for \033[33m{}\033[39m ({} --> {})".format(post['title'], post['_source_path'], post['url']))
-
-                        if template_tag in post['tags']:
-                            # print(template_tag, '::', post['tags'])
-                            post['tags'].remove("")
+                        if not post['_in_cache']:
+                            print("Generate HTML for \033[33m{}\033[39m ({} --> {})".format(post['title'], post['_source_path'], post['url']))
                             html = template.render(
                                 article=post,
                                 datetime=datetime.datetime.strptime
                             )
 
-                            url = "..{}".format(post['url'])
-                            # print("\t{}".format(url))
                             with open(url, "w") as h:
                                 print(html, file=h)
 
-                            # print('\tdone')
-                            post['_status'] = 'done'
-                        # print('\tdone?')
+                        # print('\tdone')
+                        post['_status'] = 'done'
+                    # print('\tdone?')
                 # print('end posts')
         except FileNotFoundError:
             print("\033[31mError:\033[39m template \033[33m{}\033[39m not found.".format(template_path))
@@ -159,12 +164,21 @@ def make_html(posts):
 
 def make_index(posts):
     template_path = "./templates/index.html"
+    actual_posts = []
+    for post in posts:
+        print(post['title'])
+        if '_status' in post and post['_status'] == 'done':
+            print('done')
+            print(post['tags'])
+            if 'draft' not in post['tags']:
+                print('not draft')
+                actual_posts.append(post)
     try:
         with open(template_path) as t:
             template = Template( "".join(t.readlines()) )
             print("Generate \033[33mindex.html\033[39m")
             html = template.render(
-                articles=posts,
+                articles=actual_posts,
                 datetime=datetime.datetime.strptime
             )
             with open("../index.html", "w") as h:
