@@ -31,7 +31,19 @@
             <input type="text" class="search" placeholder="Search it!"></input>
         
             <div class="count"><small>Найдено <b><span class="num">{{ articles|count }}</span></b> статей.</small></div>
-            <ol class="results"></ol>
+            <ol class="results">
+                {%- for article in articles %} 
+                <li><a href="{{ article.url }}">
+                    <h3>{{ article.title|e }}</h3>
+                    <span class="date">{{ datetime(article.date, '%Y-%m-%d').strftime('%d %b %Y') }}</span>
+                    {{ article.summary|striptags|e }}
+                    <p><small>
+                        <span class="category">{{ article.category|e }}</span>
+                        <span class="tags">{{ article.tags|join(', ') }}</span>
+                    </small></p>
+                </a></li>
+                {% endfor -%}
+            </ol>
         </div>
     </article>
     <footer class="content">
@@ -60,7 +72,7 @@
         })(window.location.search.substr(1).split('&'));
 
 
-        var articles = [ {%- for article in articles %} 
+        var articles = [ {%- for article in articles %}
             {
                 title: "{{ article.title|e }}", 
                 category: "{{ article.category|e }}", 

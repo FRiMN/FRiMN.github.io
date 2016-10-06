@@ -31,7 +31,57 @@
             <input type="text" class="search" placeholder="Search it!"></input>
         
             <div class="count"><small>Найдено <b><span class="num">5</span></b> статей.</small></div>
-            <ol class="results"></ol>
+            <ol class="results"> 
+                <li><a href="/stop_programming.html">
+                    <h3>Кончай программировать!</h3>
+                    <span class="date">14 Apr 2016</span>
+                    О ленивых программистах
+                    <p><small>
+                        <span class="category">library</span>
+                        <span class="tags">facepunch, перевод, valve, Ньюман</span>
+                    </small></p>
+                </a></li>
+                 
+                <li><a href="/jspure.html">
+                    <h3>Ваши функции действительно чистые?</h3>
+                    <span class="date">07 Oct 2016</span>
+                    О чистоте функций в JavaScript
+                    <p><small>
+                        <span class="category">library</span>
+                        <span class="tags">Staltz, js, перевод, pure</span>
+                    </small></p>
+                </a></li>
+                 
+                <li><a href="/dark_side_javascript.html">
+                    <h3>Тёмная сторона JavaScript</h3>
+                    <span class="date">13 Mar 2016</span>
+                    Баги и малоизвестные особенности JavaScript
+                    <p><small>
+                        <span class="category">tutorial</span>
+                        <span class="tags">js, bugs</span>
+                    </small></p>
+                </a></li>
+                 
+                <li><a href="/generate_hash_string.html">
+                    <h3>Генерация соли</h3>
+                    <span class="date">04 May 2016</span>
+                    Генерация строк из случайной последовательности символов (соли и т.п.)
+                    <p><small>
+                        <span class="category">tutorial</span>
+                        <span class="tags">unix, hash, password, sh</span>
+                    </small></p>
+                </a></li>
+                 
+                <li><a href="/fabrics.html">
+                    <h3>Про фреймворки</h3>
+                    <span class="date">13 Apr 2016</span>
+                    Несколько статей о пробемах сложности и фреймворков
+                    <p><small>
+                        <span class="category">library</span>
+                        <span class="tags">fun, Braithwaite, frameworks</span>
+                    </small></p>
+                </a></li>
+                </ol>
         </div>
     </article>
     <footer class="content">
@@ -60,25 +110,25 @@
         })(window.location.search.substr(1).split('&'));
 
 
-        var articles = [ 
+        var articles = [
             {
                 title: "Кончай программировать!", 
                 category: "library", 
                 date: "14 Apr 2016", 
                 url: "/stop_programming.html", 
                 summary: "О ленивых программистах", 
-                tags: "facepunch, valve, Ньюман, перевод", 
+                tags: "facepunch, перевод, valve, Ньюман", 
             },
-         
+        
             {
                 title: "Ваши функции действительно чистые?", 
                 category: "library", 
                 date: "07 Oct 2016", 
                 url: "/jspure.html", 
                 summary: "О чистоте функций в JavaScript", 
-                tags: "js, pure, Staltz, перевод", 
+                tags: "Staltz, js, перевод, pure", 
             },
-         
+        
             {
                 title: "Тёмная сторона JavaScript", 
                 category: "tutorial", 
@@ -87,16 +137,16 @@
                 summary: "Баги и малоизвестные особенности JavaScript", 
                 tags: "js, bugs", 
             },
-         
+        
             {
                 title: "Генерация соли", 
                 category: "tutorial", 
                 date: "04 May 2016", 
                 url: "/generate_hash_string.html", 
                 summary: "Генерация строк из случайной последовательности символов (соли и т.п.)", 
-                tags: "password, sh, unix, hash", 
+                tags: "unix, hash, password, sh", 
             },
-         
+        
             {
                 title: "Про фреймворки", 
                 category: "library", 

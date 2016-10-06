@@ -3,6 +3,8 @@ Slug: jspure
 Date: 2016-10-07
 Category: library
 Tags: перевод, js, pure, Staltz
+Cover: js-the-good-parts-compared.jpg
+FocalPoint: 57%
 Summary: О чистоте функций в JavaScript
 
 
