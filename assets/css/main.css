@@ -230,7 +230,7 @@ h2 {
 body > article {
     position: relative;
     margin: 0 auto;
-    font-size: 1rem;
+    font-size: 1.17rem;
     line-height: 1.5;
     text-align: left;
     width: 100%;
@@ -306,7 +306,7 @@ article blockquote {
     margin: 3em 0;
     opacity: 0.9;
     font-style: oblique;
-    font-size: 0.85em;
+    font-size: 1.25rem;
     /* padding-left: 120px; */
     padding: 0 2em 0 0.5em;
 }
