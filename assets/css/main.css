@@ -13,7 +13,7 @@ html, body {
     margin: 0;
     padding: 0;
     color: #222;
-    font-family: 'PT Serif', serif;
+    font-family: 'Fira Code', monospace;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -126,11 +126,8 @@ a.footnote-ref:after {
 
 code {
     font-family: monospace;
-    padding: 0.2em 0.5em;
-    color: #d0d0d0;
-    /* font-weight: bold; */
-    background-color: #202020;
-    font-size: 0.8em;
+    font-weight: bold;
+    font-size: 1.1em;
 }
 
 b,
@@ -142,7 +139,8 @@ em {
     font-style: italic;
 }
 small {
-    font-size: 0.7em;
+    font-size: 0.8em;
+    opacity: 0.8;
 }
 .results small {
     font-style: oblique;
@@ -205,10 +203,10 @@ footer {
 }
 
 h1,h2,h3,h4,h5,h6 {
-    color: #444;
+    /*color: #444;*/
     font-size: 1.1rem;
     line-height: 1.5;
-    font-family: "Mundo Sans W01", Arial, sans-serif;
+    /*font-family: "Mundo Sans W01", Arial, sans-serif;*/
     margin-top: 2.1rem;
     margin-bottom: 0.5rem;
     font-weight: bold;
@@ -219,7 +217,7 @@ h1 {
     margin-top: 2.5em;
 }
 h2 {
-    font-size: 1.3rem;
+    font-size: 1.1em;
     line-height: 1.5;
 }
 .results h3 {
@@ -230,7 +228,7 @@ h2 {
 body > article {
     position: relative;
     margin: 0 auto;
-    font-size: 1.17rem;
+    font-size: 0.8rem;
     line-height: 1.5;
     text-align: left;
     width: 100%;
@@ -300,15 +298,11 @@ body > article > header .summary {
 }
 
 article blockquote {
-    /* text-align: right; */
     text-align: left;
     color: #300;
     margin: 3em 0;
     opacity: 0.9;
-    font-style: oblique;
-    font-size: 1.25rem;
-    /* padding-left: 120px; */
-    padding: 0 2em 0 0.5em;
+    padding-left: 4em;
 }
 article blockquote cite {
     display: block;
