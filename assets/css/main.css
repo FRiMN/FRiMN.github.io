@@ -203,8 +203,8 @@ footer {
 }
 
 h1,h2,h3,h4,h5,h6 {
-    /*color: #444;*/
-    font-size: 1.1rem;
+    color: #555;
+    font-size: 1em;
     line-height: 1.5;
     /*font-family: "Mundo Sans W01", Arial, sans-serif;*/
     margin-top: 2.1rem;
@@ -219,6 +219,9 @@ h1 {
 h2 {
     font-size: 1.1em;
     line-height: 1.5;
+}
+h3 {
+    color: #600;
 }
 .results h3 {
     margin-top: 0;
@@ -443,12 +446,15 @@ blockquote .side-footnotes {
 }
 .side-footnotes .fnnum {
     margin-right: 0.3em;
+    color: #900;
     /* font-weight: bold; */
 }
 .side-footnotes .fnnum:after,
 .side-footnotes .fnnum:before {
     display: inline;
     opacity: 0.2;
+    position: relative;
+    bottom: -0.1em;
 }
 .side-footnotes .fnnum:before {
     content: '[';
