@@ -1,0 +1,267 @@
+<!doctype html>
+<html>
+<head>
+    <title>Об авторизации, токенах и микросервисах</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/assets/images/Chi's Sweet Home.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;" />
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/pygment.css" />
+
+    
+
+    <script type="text/javascript" src="https://yastatic.net/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://yastatic.net/underscore/1.8.3/underscore.js"></script>
+</head>
+<body>
+    <h4 class="site-name"><a href="/index.html">Магия на кончиках пальцев</a></h4>
+    <article>
+        <header style="background-image: url(
+                /assets/images/stardust.jpeg
+            );
+                
+            background-position: center center;
+        ">
+            <div class="content">
+                <h1>Об авторизации, токенах и микросервисах</h1>
+                
+
+                <div class="summary">
+                    Несколько видео об авторизации, токенах (JWT), API и безопасности в вебе
+                </div>
+            </div>
+        </header>
+        
+        <div class="text content">
+            <div class="info">
+            
+                <div>Публикация от
+                    <b><time pubdate datetime="2017-01-18T00:00:00">
+                        18 Jan 2017 
+                    </time></b>
+                </div>
+                
+            
+            
+                <div class="tags">
+                    
+                        #<a href="/index.html?q=%23microservices">microservices</a>
+                    
+                        #<a href="/index.html?q=%23xss">xss</a>
+                    
+                        #<a href="/index.html?q=%23java">java</a>
+                    
+                        #<a href="/index.html?q=%23security">security</a>
+                    
+                        #<a href="/index.html?q=%23oauth">oauth</a>
+                    
+                        #<a href="/index.html?q=%23openid">openid</a>
+                    
+                        #<a href="/index.html?q=%23csrf">csrf</a>
+                    
+                        #<a href="/index.html?q=%23js">js</a>
+                    
+                        #<a href="/index.html?q=%23token">token</a>
+                    
+                        #<a href="/index.html?q=%23api">api</a>
+                    
+                        #<a href="/index.html?q=%23jwt">jwt</a>
+                    
+                </div>
+            
+            
+                <div class="category">
+                    /<a href="/index.html?q=%2Fvideo">video</a>
+                </div>
+            
+            </div>
+
+            <p>Презентация от <em>Jacob Ideskog</em> (Twobo Technologies) об OAuth, OpenID, JWT, двух видах токенов ("по значению" и "по ссылке") и авторизации в микросервисах.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BdKmZ7mPNns" frameborder="0" allowfullscreen></iframe>
+
+<p><a href="https://youtu.be/BdKmZ7mPNns">https://youtu.be/BdKmZ7mPNns</a></p>
+<hr />
+<p>Презентация от <em>Les Hazlewood</em> (Founder &amp; CTO in Stormpath) об видах авторизации, токенах, OAuth2 и безопасности в вебе.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/sv0TUiYVimw" frameborder="0" allowfullscreen></iframe>
+
+<p><a href="https://youtu.be/sv0TUiYVimw">https://youtu.be/sv0TUiYVimw</a></p>
+<hr />
+<p>Презентация от <em>R. Kevin Nelson</em> об различных видах архитектур API, видах токинов и деавторизации.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xgkNe6R4Un0" frameborder="0" allowfullscreen></iframe>
+
+<p><a href="https://youtu.be/xgkNe6R4Un0">https://youtu.be/xgkNe6R4Un0</a></p>
+        </div>
+    </article>
+    <footer class="content">
+        <span>&copy; 2016
+            Николай Волков</span>
+        <span class="separator">::</span>
+        <a href="https://github.com/FRiMN">GitHub</a>
+        <span class="separator">::</span>
+        <a href="https://bitbucket.org/FRiMN/">Bitbucket</a>
+    </footer>
+
+    <script type="text/javascript">
+        var $headers = $("body > article > .text h2, body > article > .text h3");
+        var $headersH3 = $("body > article > .text h3");
+        var $mainHeader = $("body > article > header");
+        
+
+        // Подготовка списка содержания
+        var id = 0;
+        var toc_list = []
+        $headers.each(function (index) {
+            id = index+1;
+            $this = $(this);
+            $(this).attr('id', id);
+
+            var level = 2;
+            _.each($headersH3, function($item) {
+                if ( $this[0].id === $item.id ) {
+                    level = 3;
+                }
+            })
+            
+            // $(this).data('level', level);
+            toc_list.push([id, $(this).text(), level]);
+        })
+
+
+        // Генерация боковой панели
+        var tocT = _.template('\
+            <div class="toc">\
+                <h4>Содержание</h4>\
+                <% var prevlevel = 2; %>\
+                <ol> <% _.each(list, function(item) { %>\
+                    <% if (item[2] === 3) { %>\
+                        <% if (prevlevel === 2) { %>\
+                            <ol>\
+                        <% prevlevel = 3; } %>\
+                        <li class="level-3"><a href="#<%= item[0] %>"><%= item[1] %></a></li>\
+                    <% } else { %>\
+                        <% if (prevlevel === 3) { %>\
+                            </ol>\
+                        <% prevlevel = 2; } %>\
+                        <li><a href="#<%= item[0] %>"><%= item[1] %></a></li>\
+                    <% } %>\
+                <% }) %> </ol>\
+                <a class="up" href="#">Наверх</a>\
+            </div>\
+        ');
+
+        if (toc_list.length > 1) {
+            var tocContainer = tocT({list : toc_list});
+
+            var $tocContainer = $(tocContainer);
+            $("body > article").append($tocContainer);
+
+
+            // Позиционирование боковой панели
+            var reposition = function() {
+                if ( $(window).scrollTop() < $mainHeader.height() ) {
+                    $tocContainer.css('top', $mainHeader.height() - $(window).scrollTop());
+                    $tocContainer.css('max-height', 
+                        $(window).height() - $mainHeader.height() + $(window).scrollTop() - 16);
+                } else {
+                    $tocContainer.css('top', '');
+                    $tocContainer.css('max-height', '98%');
+                }
+            }
+            reposition();
+            $(window).scroll(reposition);
+        }
+        
+
+        // Установка анкоров на заголовки
+        $headers.each(function(index) {
+            $(this).prepend('<span class="anchor-link"><a href="#'+$(this).attr('id')+'">#</a></span>')
+        });
+
+
+        // Копирование сносок к тексту
+        var footnotesList = {};
+        var $footnotes = $("div.footnote li > p");
+        $footnotes.each(function(index) {
+            footnotesList[ $(this).find('a.footnote-backref').attr('href') ] = $(this);
+        });
+
+        var paragraphs = {}
+        $('a.footnote-ref').each(function(index) {
+            var id;
+            var fnLink = $(this).parent('sup').attr('id');
+            var $container = $(this).parents('p');
+
+            if ( $container.children('.side-footnotes').length === 0 ) {
+                id = _.uniqueId("sfn-");
+                $container.append('<div id="'+id+'" class="side-footnotes">');
+            } else {
+                id = $container.children('.side-footnotes').attr('id');
+            }
+            paragraphs[id] = paragraphs[id] || [];
+            paragraphs[id].push(fnLink);
+            paragraphs[id] = _.uniq(paragraphs[id]);
+        })
+
+        _(paragraphs).each(function(value, key, plist) {
+            var $container = $('#'+key);
+            var $p = $container.parent();
+            var fnnums = [];
+
+            $p.find('a.footnote-ref').each(function() {
+                fnnums.push( $(this).parent('sup') );
+            }).hover(function() {
+                $container.addClass('hover');
+            }, function() {
+                $container.removeClass('hover');
+            });;
+
+            _(value).each(function(element, index, fnlist) {
+                var fnnum = _(fnnums).find(function(item) {
+                    return item.attr('id') === element;
+                });
+                var E = $( footnotesList[ '#'+element ].clone() );
+                E.prepend('<span class="fnnum">'+fnnum.children('a.footnote-ref').text()+'</span>');
+                E.find('a.footnote-backref').remove();
+                $container.append( E );
+                fnnum.hover(function() {
+                    E.find('a').addClass('hover');
+                }, function() {
+                    E.find('a').removeClass('hover');
+                });
+            })
+        })
+    </script>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter36832450 = new Ya.Metrika({
+                    id:36832450,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    trackHash:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/36832450" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</body>
+</html>

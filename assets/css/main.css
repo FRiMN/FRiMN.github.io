@@ -1,4 +1,4 @@
-@import 'https://fonts.googleapis.com/css?family=PT+Serif&subset=cyrillic,cyrillic-ext';
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono|Fira+Sans&subset=cyrillic');
 
 /* reset */
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
@@ -13,7 +13,7 @@ html, body {
     margin: 0;
     padding: 0;
     color: #222;
-    font-family: 'Fira Code', monospace;
+    font-family: 'Fira Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -34,9 +34,12 @@ aside,
     margin: 1rem 0;
     overflow: auto;
     font-size: 0.8rem;
-    font-family: monospace;
+    font-family: 'Fira Sans', sans-serif;
     -webkit-box-shadow: 3px 3px 1px 0 rgba(0,0,0, 0.2);
             box-shadow: 3px 3px 1px 0 rgba(0,0,0, 0.2);
+}
+.highlight {
+    font-family: 'Fira Mono', monospace;
 }
 .results li > a.hover,
 .results li > a:hover {
@@ -125,9 +128,11 @@ a.footnote-ref:after {
 }
 
 code {
-    font-family: monospace;
+    font-family: 'Fira Mono', monospace;
     font-weight: bold;
-    font-size: 1.1em;
+    font-size: 0.9em;
+    padding: 0 0.3em;
+    background-color: rgba(153, 0, 0, 0.05);
 }
 
 b,
@@ -195,11 +200,13 @@ small {
 
 header,
 footer {
-    font-family: serif;
+/*
+    font-family: 'PT Sans', serif;
+*/
 }
 .info,
 .side-footnotes {
-    font-family: "Mundo Sans W01", Arial, sans-serif;
+    font-family: 'Fira Sans', sans-serif;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -231,7 +238,7 @@ h3 {
 body > article {
     position: relative;
     margin: 0 auto;
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     line-height: 1.5;
     text-align: left;
     width: 100%;
