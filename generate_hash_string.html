@@ -72,9 +72,8 @@
 
             <h2>Формат хэша пароля</h2>
 <p>Можно встретить следующий вариант хранения паролей:</p>
-<div class="highlight"><pre><span class="err">$</span><span class="n">id</span><span class="err">$</span><span class="n">salt</span><span class="err">$</span><span class="n">encrypted</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$id$salt$encrypted
+</code></pre></div>
 
 <p>где:</p>
 <ul>
@@ -90,69 +89,64 @@
 <li><em>encrypted</em> -- результат применения алгоритма хэширования к паролю и соли</li>
 </ul>
 <h3>Пример</h3>
-<div class="highlight"><pre><span class="err">$</span><span class="mi">1</span><span class="err">$</span><span class="n">vTsHxl6j</span><span class="err">$</span><span class="n">dFvR</span><span class="p">.</span><span class="n">mqYF</span><span class="o">/</span><span class="n">SP3kysqCM</span><span class="o">/</span><span class="n">s</span><span class="o">/</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$1$vTsHxl6j$dFvR.mqYF/SP3kysqCM/s/
+</code></pre></div>
 
 <p><code>dFvR.mqYF/SP3kysqCM/s/</code> -- хэш md5 (<code>1</code>) от парольной фразы с солью <code>vTsHxl6j</code>.</p>
 <h2>openssl rand</h2>
 <p>Генерирует псевдослучайную последовательность символов</p>
-<div class="highlight"><pre><span class="c"># generates a base64 encoded 32 chars length random string</span>
-<span class="nv">$ </span>openssl rand -base64 32
+<div class="highlight"><pre><span></span><code><span class="c1"># generates a base64 encoded 32 chars length random string</span>
+$ openssl rand -base64 <span class="m">32</span>
 CJ/a0JsZlStDceTGtwfVkInUwJZ6rl7PnNtysz0/Kb8<span class="o">=</span>
-</pre></div>
-
+</code></pre></div>
 
 <h2>pwgen</h2>
 <p>Генерирует псевдослучайную последовательность символов удобную для запоминания</p>
-<div class="highlight"><pre><span class="c"># generate 2 passwords of 8 chars length each</span>
-<span class="nv">$ </span>pwgen -nA 8 2
+<div class="highlight"><pre><span></span><code><span class="c1"># generate 2 passwords of 8 chars length each</span>
+$ pwgen -nA <span class="m">8</span> <span class="m">2</span>
 aafaba3w mee6esho
-</pre></div>
-
+</code></pre></div>
 
 <h2>apg</h2>
 <p>Генерирует псевдослучайную последовательность символов удобную для запоминания и произношения</p>
-<div class="highlight"><pre><span class="nv">$ </span>apg -n1 -t -a0
-WoonMirg; <span class="o">(</span>Woon-Mirg-SEMICOLON<span class="o">)</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ apg -n1 -t -a0
+WoonMirg<span class="p">;</span> <span class="o">(</span>Woon-Mirg-SEMICOLON<span class="o">)</span>
+</code></pre></div>
 
 <h2>makepasswd</h2>
 <p>Генерирует псевдослучайную последовательность символов, а также шифрует пароли с солью</p>
-<div class="highlight"><pre><span class="c"># generates 2 passwords of 20 chars each</span>
-<span class="nv">$ </span>makepasswd --char 20 --count 2
+<div class="highlight"><pre><span></span><code><span class="c1"># generates 2 passwords of 20 chars each</span>
+$ makepasswd --char <span class="m">20</span> --count <span class="m">2</span>
 pdfvDKXNth144SEtcGpJ
 m5Qoe1PQQBFDd69qJYSz
 
-<span class="c"># ************************</span>
+<span class="c1"># ************************</span>
 
-<span class="c"># encrypt a password (instead of generating)</span>
-<span class="nv">$ </span><span class="nb">echo</span> <span class="s1">&#39;secret-password&#39;</span> &gt; /tmp/pwd.txt
+<span class="c1"># encrypt a password (instead of generating)</span>
+$ <span class="nb">echo</span> <span class="s1">&#39;secret-password&#39;</span> &gt; /tmp/pwd.txt
 
-<span class="c"># аналогично --cryptsalt 0</span>
-<span class="nv">$ </span>makepasswd --clearfrom /tmp/pwd.txt --crypt
+<span class="c1"># аналогично --cryptsalt 0</span>
+$ makepasswd --clearfrom /tmp/pwd.txt --crypt
 secret-password   hXY1bRcse3XNk
-<span class="nv">$ </span>makepasswd --clearfrom /tmp/pwd.txt --crypt
+$ makepasswd --clearfrom /tmp/pwd.txt --crypt
 secret-password   EmUq/db.hXCT.
 
-<span class="nv">$ </span>makepasswd --clearfrom /tmp/pwd.txt --crypt --cryptsalt 1
+$ makepasswd --clearfrom /tmp/pwd.txt --crypt --cryptsalt <span class="m">1</span>
 secret-password   aaBoSGSDWKUC2
-<span class="nv">$ </span>makepasswd --clearfrom /tmp/pwd.txt --crypt --cryptsalt 1
+$ makepasswd --clearfrom /tmp/pwd.txt --crypt --cryptsalt <span class="m">1</span>
 secret-password   aaBoSGSDWKUC2
 
-<span class="nv">$ </span>makepasswd --clearfrom /tmp/pwd.txt --crypt-md5
+$ makepasswd --clearfrom /tmp/pwd.txt --crypt-md5
 secret-password   <span class="nv">$1$CQz7qJqd$Io6ZfCeXdP0gKWYa3</span>/CMm0
-<span class="nv">$ </span>makepasswd --clearfrom /tmp/pwd.txt --crypt-md5
+$ makepasswd --clearfrom /tmp/pwd.txt --crypt-md5
 secret-password   <span class="nv">$1$vTsHxl6j$dFvR</span>.mqYF/SP3kysqCM/s/
-</pre></div>
-
+</code></pre></div>
 
 <div class="footnote">
 <hr />
 <ol>
 <li id="fn:coelhorjc">
-<p><a href="https://coelhorjc.wordpress.com/2015/04/07/how-to-generate-random-and-store-key-derived-passwords-in-linux-using-pwgenapgmakepasswdmkpasswd-and-cryptbcryptscrypt/">How to generate (random) and store (key-derived) passwords in Linux (using pwgen/apg/makepasswd/mkpasswd and crypt/bcrypt/scrypt)</a>&#160;<a class="footnote-backref" href="#fnref:coelhorjc" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p><a href="https://coelhorjc.wordpress.com/2015/04/07/how-to-generate-random-and-store-key-derived-passwords-in-linux-using-pwgenapgmakepasswdmkpasswd-and-cryptbcryptscrypt/">How to generate (random) and store (key-derived) passwords in Linux (using pwgen/apg/makepasswd/mkpasswd and crypt/bcrypt/scrypt)</a>&#160;<a class="footnote-backref" href="#fnref:coelhorjc" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

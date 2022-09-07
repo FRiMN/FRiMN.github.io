@@ -101,10 +101,16 @@ def traverse_dir(use_cache):
                         if not in_cache:
                             post["text"] = post["text"] + line
             if not in_cache:
-                post['text'] = markdown.markdown(post['text'], extensions=[
-                    'markdown.extensions.footnotes',
-                    'markdown.extensions.codehilite(css_class=highlight)',
-                ])
+                post['text'] = markdown.markdown(
+                    post['text'],
+                    extensions=[
+                        'markdown.extensions.footnotes',
+                        'markdown.extensions.codehilite',
+                    ],
+                    extension_configs={
+                        'markdown.extensions.codehilite': {'css_class': 'highlight'}
+                    }
+                )
             if 'slug' in post:
                 filename = post['slug']
             else:
