@@ -1,8 +1,12 @@
+---
+blogpost: true
+date: 2022-09-07
+category: special
+tags: resume, special
+---
+
 Title: Резюме
 Slug: resume
-Date: 2022-09-07
-Category: special
-Tags: resume, special
 Cover: illuminator.jpg
 
 
