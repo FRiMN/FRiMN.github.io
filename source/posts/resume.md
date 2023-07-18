@@ -54,7 +54,7 @@ https://frimn.github.io/
 
 ### Dex.guru, Belgrade, Serbia
 
-*03.2022 - настоящее время*
+*03.2022 - 09.2022*
 
 **Программист Backend**
 
