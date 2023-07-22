@@ -1,17 +1,11 @@
 ---
 blogpost: true
-date: 2016-03-13
+date: 2016-04-21
 category: tutorial
 tags: bugs, js
 language: Russian
 ---
 
-Slug: dark_side_javascript
-Cover: cover4.jpg
-Color: #564a4e
-FocalPoint: 25%
-Summary: Баги и малоизвестные особенности JavaScript
-Modified: 2016-04-21
 
 
 # Тёмная сторона JavaScript

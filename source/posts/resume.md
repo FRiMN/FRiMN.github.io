@@ -5,10 +5,6 @@ category: special
 tags: resume, special
 ---
 
-Title: Резюме
-Slug: resume
-Cover: illuminator.jpg
-
 
 
 Волков Николай

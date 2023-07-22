@@ -4,8 +4,6 @@ category: library
 tags: перевод, facepunch, valve, Ньюман
 ---
 
-Slug: stop_programming
-Summary: О ленивых программистах
 
 
 # Кончай программировать!
